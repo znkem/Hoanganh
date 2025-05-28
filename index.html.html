@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phạm Thị Yến Nhi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts animation */
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 20px;
+            animation: floating 6s infinite linear;
+            pointer-events: none;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #764ba2;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); }
+            to { text-shadow: 2px 2px 20px rgba(118, 75, 162, 0.5); }
+        }
+
+        .question {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 40px;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #yesBtn {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            color: white;
+        }
+
+        #noBtn {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        .thank-you {
+            display: none;
+            animation: fadeInScale 0.8s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .thank-you h2 {
+            color: #4ecdc4;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .thank-you p {
+            font-size: 1.3em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Crazy animation for "Yes" button */
+        .crazy-move {
+            animation: crazyMove 0.5s ease-in-out;
+        }
+
+        @keyframes crazyMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, -50px) rotate(180deg); }
+            50% { transform: translate(-80px, 60px) rotate(-180deg); }
+            75% { transform: translate(120px, 30px) rotate(360deg); }
+        }
+
+        /* Sparkle effect */
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: sparkle 1s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 1;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0) translate(50px, -50px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 2em; }
+            .question { font-size: 1.5em; }
+            button { padding: 12px 25px; font-size: 1.1em; }
+            .buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts -->
+    <div class="heart" style="left: 10%; animation-delay: 0s;">💖</div>
+    <div class="heart" style="left: 20%; animation-delay: 1s;">💕</div>
+    <div class="heart" style="left: 30%; animation-delay: 2s;">💗</div>
+    <div class="heart" style="left: 40%; animation-delay: 3s;">💓</div>
+    <div class="heart" style="left: 50%; animation-delay: 4s;">💖</div>
+    <div class="heart" style="left: 60%; animation-delay: 1.5s;">💕</div>
+    <div class="heart" style="left: 70%; animation-delay: 2.5s;">💗</div>
+    <div class="heart" style="left: 80%; animation-delay: 0.5s;">💓</div>
+    <div class="heart" style="left: 90%; animation-delay: 3.5s;">💖</div>
+
+    <div class="container">
+        <div id="mainContent">
+            <h1>Phạm Thị Yến Nhi</h1>
+            <div class="question">
+                Em có muốn bỏ anh không? 💕
+            </div>
+            <div class="buttons">
+                <button id="yesBtn">Có 😢</button>
+                <button id="noBtn">Không 💖</button>
+            </div>
+        </div>
+        
+        <div id="thankYou" class="thank-you">
+            <h2>Cảm ơn em đã ở lại! 💕</h2>
+            <p>Anh yêu em nhiều lắm! ❤️✨</p>
+        </div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const mainContent = document.getElementById('mainContent');
+        const thankYou = document.getElementById('thankYou');
+        let moveCount = 0;
+
+        // Function to create sparkle effect
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1000);
+        }
+
+        // Function to move "Yes" button randomly
+        function moveYesButton() {
+            const container = document.querySelector('.container');
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = yesBtn.getBoundingClientRect();
+            
+            const maxX = containerRect.width - btnRect.width - 40;
+            const maxY = containerRect.height - btnRect.height - 40;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            yesBtn.style.position = 'absolute';
+            yesBtn.style.left = randomX + 'px';
+            yesBtn.style.top = randomY + 'px';
+            yesBtn.classList.add('crazy-move');
+            
+            // Create sparkle effect
+            createSparkle(randomX + btnRect.width/2, randomY + btnRect.height/2);
+            
+            setTimeout(() => {
+                yesBtn.classList.remove('crazy-move');
+            }, 500);
+            
+            moveCount++;
+            
+            // After 5 moves, make it even more fun
+            if (moveCount >= 5) {
+                yesBtn.textContent = 'Đuổi không kịp! 😅';
+            }
+            if (moveCount >= 8) {
+                yesBtn.textContent = 'Em bắt được anh chưa? 😂';
+            }
+        }
+
+        // Event listeners
+        yesBtn.addEventListener('click', moveYesButton);
+        yesBtn.addEventListener('mouseenter', moveYesButton);
+
+        noBtn.addEventListener('click', function() {
+            // Create multiple sparkles
+            for(let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    createSparkle(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight
+                    );
+                }, i * 100);
+            }
+            
+            mainContent.style.display = 'none';
+            thankYou.style.display = 'block';
+            
+            // Add extra heart animation
+            for(let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '💖';
+                    heart.style.position = 'absolute';
+                    heart.style.left = Math.random() * window.innerWidth + 'px';
+                    heart.style.top = window.innerHeight + 'px';
+                    heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                    heart.style.animation = 'floating 3s linear';
+                    heart.style.pointerEvents = 'none';
+                    heart.style.zIndex = '1000';
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 200);
+            }
+        });
+
+        // Add continuous floating hearts
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.innerHTML = ['💖', '💕', '💗', '💓'][Math.floor(Math.random() * 4)];
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = '0s';
+            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 6000);
+        }, 2000);
+    </script>
+</body>
+</html>
