@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: 'Georgia', serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 25%, #2c3e50 50%, #34495e 75%, #2c3e50 100%);
             background-size: 400% 400%;
             animation: gradientShift 8s ease infinite;
@@ -187,7 +187,7 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
             position: relative;
             overflow: hidden;
-            font-family: 'Georgia', serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         #yesBtn {
@@ -212,17 +212,24 @@
         }
 
         .emotional-message {
-            background: rgba(231, 76, 60, 0.1);
-            border: 2px solid rgba(231, 76, 60, 0.3);
+            background: rgba(231, 76, 60, 0.15);
+            border: 2px solid rgba(231, 76, 60, 0.4);
             border-radius: 15px;
             padding: 20px;
-            margin: 20px 0;
+            margin: 20px auto;
             color: #e74c3c;
             font-size: 1.3em;
             font-weight: 600;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
             animation: messageAppear 0.8s ease-out;
             backdrop-filter: blur(10px);
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            max-width: 400px;
+            text-align: center;
         }
 
         @keyframes messageAppear {
@@ -355,38 +362,38 @@
     <div class="rain" style="left: 90%; animation-delay: 0.1s;"></div>
 
     <!-- Broken hearts -->
-    <div class="broken-heart" style="left: 15%; animation-delay: 0s;">💔</div>
-    <div class="broken-heart" style="left: 35%; animation-delay: 2s;">😢</div>
-    <div class="broken-heart" style="left: 55%; animation-delay: 4s;">💔</div>
-    <div class="broken-heart" style="left: 75%; animation-delay: 6s;">😭</div>
-    <div class="broken-heart" style="left: 25%; animation-delay: 1s;">💔</div>
-    <div class="broken-heart" style="left: 65%; animation-delay: 3s;">😢</div>
-    <div class="broken-heart" style="left: 85%; animation-delay: 5s;">💔</div>
+    <div class="broken-heart" style="left: 15%; animation-delay: 0s;">♦</div>
+    <div class="broken-heart" style="left: 35%; animation-delay: 2s;">♠</div>
+    <div class="broken-heart" style="left: 55%; animation-delay: 4s;">♣</div>
+    <div class="broken-heart" style="left: 75%; animation-delay: 6s;">♥</div>
+    <div class="broken-heart" style="left: 25%; animation-delay: 1s;">♦</div>
+    <div class="broken-heart" style="left: 65%; animation-delay: 3s;">♠</div>
+    <div class="broken-heart" style="left: 85%; animation-delay: 5s;">♣</div>
 
     <!-- Tears -->
-    <div class="tear" style="left: 12%; animation-delay: 0.5s;">💧</div>
-    <div class="tear" style="left: 28%; animation-delay: 1.5s;">💧</div>
-    <div class="tear" style="left: 45%; animation-delay: 2.5s;">💧</div>
-    <div class="tear" style="left: 62%; animation-delay: 3.5s;">💧</div>
-    <div class="tear" style="left: 78%; animation-delay: 4.5s;">💧</div>
+    <div class="tear" style="left: 12%; animation-delay: 0.5s;">●</div>
+    <div class="tear" style="left: 28%; animation-delay: 1.5s;">●</div>
+    <div class="tear" style="left: 45%; animation-delay: 2.5s;">●</div>
+    <div class="tear" style="left: 62%; animation-delay: 3.5s;">●</div>
+    <div class="tear" style="left: 78%; animation-delay: 4.5s;">●</div>
 
     <div class="container">
         <div id="mainContent">
             <h1>Phạm Thị Yến Nhi</h1>
             <div class="question">
-                Em có muốn rời xa anh không? 💔😢
+                Em có muốn rời xa anh không?
             </div>
             <div class="buttons">
-                <button id="yesBtn">Có... 😭💔</button>
-                <button id="noBtn">Không bao giờ 💕</button>
+                <button id="yesBtn">Có...</button>
+                <button id="noBtn">Không bao giờ</button>
             </div>
             <div id="emotionalMessages"></div>
         </div>
         
         <div id="thankYou" class="thank-you">
-            <h2>Anh biết em sẽ không rời xa anh! 💕</h2>
-            <p>Tình yêu của chúng ta sẽ mãi mãi bên nhau! ❤️✨<br>
-            Anh yêu em nhiều hơn tất cả mọi thứ trên đời! 🌟💖</p>
+            <h2>Anh biết em sẽ không rời xa anh!</h2>
+            <p>Tình yêu của chúng ta sẽ mãi mãi bên nhau!<br>
+            Anh yêu em nhiều hơn tất cả mọi thứ trên đời!</p>
         </div>
     </div>
 
@@ -399,16 +406,16 @@
         let clickCount = 0;
 
         const sadMessages = [
-            "Anh làm tất cả là vì em mà, sao em nỡ? 😢💔",
-            "Em có biết anh đau lòng như thế nào không? 😭",
-            "Tất cả những gì anh có đều dành cho em... 💔",
-            "Anh không thể sống thiếu em được... 😢",
-            "Em là tất cả của anh mà... Sao em có thể? 💔😭",
-            "Anh đã yêu em hết lòng, tại sao em lại... 😢💔",
-            "Em có nhớ những ngày đẹp của chúng ta không? 😭💔",
-            "Anh sẽ chết nếu mất em... Đừng bỏ anh! 😢💔😭",
-            "Em là ánh sáng duy nhất trong đời anh... 🌟💔",
-            "Không có em, anh như kẻ lạc lối trong bóng tối... 😭💔"
+            "Anh làm tất cả là vì em mà, sao em nỡ?",
+            "Em có biết anh đau lòng như thế nào không?",
+            "Tất cả những gì anh có đều dành cho em...",
+            "Anh không thể sống thiếu em được...",
+            "Em là tất cả của anh mà... Sao em có thể?",
+            "Anh đã yêu em hết lòng, tại sao em lại...",
+            "Em có nhớ những ngày đẹp của chúng ta không?",
+            "Anh sẽ chết nếu mất em... Đừng bỏ anh!",
+            "Em là ánh sáng duy nhất trong đời anh...",
+            "Không có em, anh như kẻ lạc lối trong bóng tối..."
         ];
 
         function createSparkle(x, y) {
@@ -443,14 +450,14 @@
                 const messageDiv = document.createElement('div');
                 messageDiv.className = 'emotional-message';
                 messageDiv.textContent = sadMessages[clickCount];
-                emotionalMessages.appendChild(messageDiv);
+                document.body.appendChild(messageDiv);
                 
-                // Remove message after 5 seconds
+                // Remove message after 4 seconds
                 setTimeout(() => {
                     if (messageDiv.parentNode) {
                         messageDiv.remove();
                     }
-                }, 5000);
+                }, 4000);
             }
         }
 
@@ -480,10 +487,10 @@
             clickCount++;
             
             if (clickCount >= 5) {
-                yesBtn.textContent = 'Em không thể bỏ anh! 😭💔';
+                yesBtn.textContent = 'Em không thể bỏ anh!';
             }
             if (clickCount >= 10) {
-                yesBtn.textContent = 'Anh biết em yêu anh mà! 😢❤️';
+                yesBtn.textContent = 'Anh biết em yêu anh mà!';
             }
         }
 
@@ -508,7 +515,7 @@
             for(let i = 0; i < 30; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
-                    heart.innerHTML = ['💖', '💕', '💗', '💓', '❤️', '🌟'][Math.floor(Math.random() * 6)];
+                    heart.innerHTML = ['♥', '♦', '♠', '♣', '★', '✦'][Math.floor(Math.random() * 6)];
                     heart.style.position = 'absolute';
                     heart.style.left = Math.random() * window.innerWidth + 'px';
                     heart.style.top = window.innerHeight + 'px';
@@ -527,7 +534,7 @@
 
         // Add continuous atmospheric effects
         setInterval(() => {
-            const effects = ['💔', '😢', '💧', '😭'];
+            const effects = ['♦', '♠', '♣', '♥'];
             const effect = document.createElement('div');
             effect.innerHTML = effects[Math.floor(Math.random() * effects.length)];
             effect.className = 'broken-heart';
