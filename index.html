@@ -2,8 +2,8 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
-    <title>Tình Yêu Trong Lòng Anh - Romantic Galaxy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Em có yêu anh không? - Romantic Galaxy</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * {
@@ -12,108 +12,58 @@
             box-sizing: border-box;
         }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            overflow: hidden;
-            -webkit-overflow-scrolling: touch;
-            overscroll-behavior: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            background-color: #000;
-        }
-
         body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
             background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
-            font-family: 'Orbitron', 'Courier New', monospace;
-            perspective: 1500px;
+            font-family: 'Orbitron', sans-serif;
             cursor: grab;
-            touch-action: none;
-            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
-        body:active {
-            cursor: grabbing;
-        }
+        body:active { cursor: grabbing; }
 
         /* Galaxy Container */
-        .galaxy-container {
-            position: absolute;
+        .galaxy {
+            position: fixed;
             top: 50%;
             left: 50%;
             width: 100%;
             height: 100%;
+            transform: translate(-50%, -50%);
             transform-style: preserve-3d;
-            transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg) scale(1);
-            will-change: transform;
         }
 
         /* Text Particles */
-        .text-particle {
+        .particle {
             position: absolute;
-            color: #fff;
-            font-size: 14px;
+            color: #ff6b9d;
+            font-size: 16px;
             font-weight: 600;
             white-space: nowrap;
-            text-shadow: 
-                0 0 10px currentColor,
-                0 0 20px currentColor,
-                0 0 30px currentColor,
-                2px 2px 4px rgba(0,0,0,0.8);
-            transform-style: preserve-3d;
+            text-shadow: 0 0 20px currentColor;
             pointer-events: none;
-            letter-spacing: 1px;
-            will-change: transform, opacity;
-            backface-visibility: hidden;
-            transform: translateZ(0);
+            animation: float 8s linear infinite;
         }
 
-        .text-particle.love {
-            color: #ff6b9d;
-            text-shadow: 
-                0 0 15px currentColor,
-                0 0 25px currentColor,
-                0 0 35px currentColor,
-                2px 2px 6px rgba(0,0,0,0.9);
-        }
-
-        .text-particle.birthday {
-            color: #4ecdc4;
-            text-shadow: 
-                0 0 15px currentColor,
-                0 0 25px currentColor,
-                0 0 35px currentColor,
-                2px 2px 6px rgba(0,0,0,0.9);
-        }
-
-        .text-particle.date {
-            color: #c534ed;
-            text-shadow: 
-                0 0 20px currentColor,
-                0 0 30px currentColor,
-                0 0 40px currentColor,
-                2px 2px 6px rgba(0,0,0,0.9);
-        }
-
-        .text-particle.special {
-            color: #f34bce;
-            text-shadow: 
-                0 0 15px currentColor,
-                0 0 25px currentColor,
-                0 0 35px currentColor,
-                2px 2px 6px rgba(0,0,0,0.9);
-        }
-
-        .text-particle.heart {
+        .particle.heart {
             color: #ff69b4;
-            text-shadow: 
-                0 0 20px currentColor,
-                0 0 30px currentColor,
-                0 0 40px currentColor,
-                3px 3px 8px rgba(0,0,0,0.9);
+            font-size: 20px;
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(-100px) translateZ(0px);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+            to {
+                transform: translateY(100vh) translateZ(0px);
+                opacity: 0;
+            }
         }
 
         /* Stars */
@@ -125,7 +75,6 @@
             border-radius: 50%;
             box-shadow: 0 0 10px white;
             animation: twinkle 3s infinite;
-            will-change: opacity;
         }
 
         @keyframes twinkle {
@@ -133,8 +82,8 @@
             50% { opacity: 1; }
         }
 
-        /* Question Container */
-        .question-container {
+        /* Main Container */
+        .container {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -144,58 +93,31 @@
             backdrop-filter: blur(20px);
             border-radius: 30px;
             padding: 40px;
-            box-shadow: 
-                0 30px 80px rgba(0, 0, 0, 0.8),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                0 0 60px rgba(255, 107, 157, 0.4);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(255, 107, 157, 0.4);
             text-align: center;
             max-width: 500px;
             width: 90%;
             border: 2px solid rgba(255, 107, 157, 0.3);
-            animation: containerFloat 6s ease-in-out infinite;
+            animation: float-container 6s ease-in-out infinite;
         }
 
-        @keyframes containerFloat {
-            0%, 100% { 
-                transform: translate(-50%, -50%) translateY(0px);
-                box-shadow: 
-                    0 30px 80px rgba(0, 0, 0, 0.8),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                    0 0 60px rgba(255, 107, 157, 0.4);
-            }
-            50% { 
-                transform: translate(-50%, -50%) translateY(-10px);
-                box-shadow: 
-                    0 40px 100px rgba(0, 0, 0, 0.9),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                    0 0 100px rgba(255, 107, 157, 0.6);
-            }
+        @keyframes float-container {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+            50% { transform: translate(-50%, -50%) translateY(-10px); }
         }
 
-        .question-container h1 {
+        .container h1 {
             color: #ff6b9d;
-            font-size: 2.8em;
+            font-size: 2.5em;
             margin-bottom: 25px;
-            text-shadow: 
-                2px 2px 4px rgba(0, 0, 0, 0.8),
-                0 0 30px rgba(255, 107, 157, 0.7);
-            animation: nameGlow 3s ease-in-out infinite alternate;
+            text-shadow: 0 0 30px rgba(255, 107, 157, 0.7);
+            animation: glow 3s ease-in-out infinite alternate;
             font-weight: 900;
-            letter-spacing: 3px;
         }
 
-        @keyframes nameGlow {
-            from { 
-                text-shadow: 
-                    2px 2px 4px rgba(0, 0, 0, 0.8),
-                    0 0 30px rgba(255, 107, 157, 0.7);
-            }
-            to { 
-                text-shadow: 
-                    2px 2px 4px rgba(0, 0, 0, 0.8),
-                    0 0 50px rgba(255, 107, 157, 0.9),
-                    0 0 80px rgba(255, 107, 157, 0.5);
-            }
+        @keyframes glow {
+            from { text-shadow: 0 0 30px rgba(255, 107, 157, 0.7); }
+            to { text-shadow: 0 0 50px rgba(255, 107, 157, 0.9), 0 0 80px rgba(255, 107, 157, 0.5); }
         }
 
         .question {
@@ -204,7 +126,6 @@
             margin-bottom: 35px;
             line-height: 1.5;
             font-weight: 600;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
         .buttons {
@@ -212,7 +133,6 @@
             gap: 25px;
             justify-content: center;
             flex-wrap: wrap;
-            margin-bottom: 20px;
         }
 
         button {
@@ -224,18 +144,16 @@
             transition: all 0.4s ease;
             font-weight: bold;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-            position: relative;
-            overflow: hidden;
             font-family: 'Orbitron', sans-serif;
         }
 
-        #yesBtn {
+        .yes-btn {
             background: linear-gradient(45deg, #e74c3c, #c0392b);
             color: white;
             border: 2px solid rgba(231, 76, 60, 0.5);
         }
 
-        #noBtn {
+        .no-btn {
             background: linear-gradient(45deg, #ff6b9d, #4ecdc4);
             color: white;
             border: 2px solid rgba(255, 107, 157, 0.5);
@@ -246,881 +164,315 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
         }
 
-        button:active {
-            transform: translateY(-2px) scale(1.02);
-        }
-
         /* Thank You Message */
         .thank-you {
             display: none;
-            animation: thankYouAppear 1.5s ease-out;
+            animation: appear 1.5s ease-out;
             color: #4ecdc4;
         }
 
-        @keyframes thankYouAppear {
-            0% {
-                opacity: 0;
-                transform: scale(0.3) rotate(-15deg);
-            }
-            50% {
-                transform: scale(1.1) rotate(5deg);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) rotate(0deg);
-            }
+        @keyframes appear {
+            0% { opacity: 0; transform: scale(0.3); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         .thank-you h2 {
             color: #4ecdc4;
             font-size: 2.5em;
             margin-bottom: 20px;
-            text-shadow: 
-                2px 2px 4px rgba(0, 0, 0, 0.8),
-                0 0 30px rgba(78, 205, 196, 0.7);
+            text-shadow: 0 0 30px rgba(78, 205, 196, 0.7);
         }
 
         .thank-you p {
             font-size: 1.3em;
             color: #ecf0f1;
             line-height: 1.6;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         }
 
-        /* Emotional Messages */
-        .emotional-message {
-            background: rgba(231, 76, 60, 0.2);
-            border: 2px solid rgba(231, 76, 60, 0.6);
-            border-radius: 20px;
-            padding: 15px 20px;
-            margin: 15px auto;
-            color: #e74c3c;
-            font-size: 1.1em;
-            font-weight: 600;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-            animation: messageAppear 0.8s ease-out;
-            backdrop-filter: blur(15px);
+        /* Sad Messages */
+        .sad-message {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 2000;
+            background: rgba(231, 76, 60, 0.2);
+            border: 2px solid rgba(231, 76, 60, 0.6);
+            border-radius: 20px;
+            padding: 15px 20px;
+            color: #e74c3c;
+            font-size: 1.1em;
+            font-weight: 600;
+            animation: message-appear 0.8s ease-out;
+            backdrop-filter: blur(15px);
             max-width: 400px;
             text-align: center;
         }
 
-        @keyframes messageAppear {
-            0% {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-50px) scale(0.5);
-            }
-            50% {
-                transform: translateX(-50%) translateY(-10px) scale(1.1);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0) scale(1);
-            }
+        @keyframes message-appear {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-50px) scale(0.5); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
         }
 
         /* Crazy Move Animation */
         .crazy-move {
-            animation: crazyMove 0.8s ease-in-out;
+            animation: crazy-move 0.8s ease-in-out;
         }
 
-        @keyframes crazyMove {
-            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-            15% { transform: translate(120px, -60px) rotate(45deg) scale(1.1); }
-            30% { transform: translate(-100px, 80px) rotate(-90deg) scale(0.9); }
-            45% { transform: translate(140px, 40px) rotate(180deg) scale(1.2); }
-            60% { transform: translate(-70px, -50px) rotate(-45deg) scale(0.8); }
-            75% { transform: translate(90px, 70px) rotate(270deg) scale(1.1); }
+        @keyframes crazy-move {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, -50px) rotate(45deg); }
+            50% { transform: translate(-80px, 60px) rotate(-90deg); }
+            75% { transform: translate(120px, 30px) rotate(180deg); }
         }
 
-        /* Sparkle Effect */
-        .sparkle {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: radial-gradient(circle, #ffd700, #ff6b9d);
-            border-radius: 50%;
-            animation: sparkle 2s ease-out forwards;
-            pointer-events: none;
-            box-shadow: 0 0 15px #ffd700;
-        }
-
-        @keyframes sparkle {
-            0% {
-                opacity: 1;
-                transform: scale(0) rotate(0deg);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(2) rotate(180deg);
-            }
-            100% {
-                opacity: 0;
-                transform: scale(0) rotate(360deg) translate(150px, -150px);
-            }
-        }
-
-        /* Heart Rain */
-        .heart-rain {
+        /* Hearts Effect */
+        .heart {
             position: absolute;
             color: rgba(255, 107, 157, 0.8);
             font-size: 20px;
-            animation: heartFall 4s infinite linear;
+            animation: heart-fall 4s infinite linear;
             pointer-events: none;
             z-index: 500;
         }
 
-        @keyframes heartFall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
+        @keyframes heart-fall {
+            0% { transform: translateY(-100px); opacity: 0; }
+            10%, 90% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
         }
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            body {
-                perspective: 1000px;
-            }
-            
-            .galaxy-container {
-                perspective: 1000px;
-            }
-            
-            .text-particle {
-                font-size: 12px;
-                letter-spacing: 0.5px;
-            }
-            
-            .text-particle.heart {
-                font-size: 16px;
-            }
-            
-            .star {
-                width: 1.5px;
-                height: 1.5px;
-            }
-
-            .question-container {
+            .container {
                 padding: 30px 25px;
                 max-width: 350px;
             }
-
-            .question-container h1 {
-                font-size: 2.2em;
-            }
-
-            .question {
-                font-size: 1.5em;
-            }
-
-            button {
-                padding: 15px 25px;
-                font-size: 1.1em;
-            }
-
-            .buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .text-particle {
-                font-size: 10px;
-                letter-spacing: 0.3px;
-            }
-            
-            .text-particle.heart {
-                font-size: 14px;
-            }
-            
-            .star {
-                width: 1px;
-                height: 1px;
-            }
-
-            .question-container h1 {
-                font-size: 1.8em;
-            }
-
-            .question {
-                font-size: 1.3em;
-            }
-        }
-
-        /* Loading Screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 3000;
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #ff6b9d;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 2rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            .container h1 { font-size: 2em; }
+            .question { font-size: 1.5em; }
+            button { padding: 15px 25px; font-size: 1.1em; }
+            .buttons { flex-direction: column; align-items: center; }
+            .particle { font-size: 12px; }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-spinner"></div>
-        <h2>Chuẩn bị một điều kỳ diệu...</h2>
-        <p>Vui lòng đợi trong giây lát</p>
-    </div>
+    <div class="galaxy" id="galaxy"></div>
 
-    <!-- Galaxy Container -->
-    <div class="galaxy-container" id="galaxy">
-        <!-- Text particles and stars will be generated by JavaScript -->
-    </div>
-
-    <!-- Question Container -->
-    <div class="question-container" id="questionContainer">
-        <div id="mainContent">
-            <h1>Phạm Nhi ơi! ❤️</h1>
-            <div class="question">
-                Em có muốn rời xa anh không?
-            </div>
+    <div class="container" id="container">
+        <div id="main-content">
+            <h1>Nguyễn Tường Duy ❤️</h1>
+            <div class="question">Em có yêu anh không?</div>
             <div class="buttons">
-                <button id="yesBtn">Có...</button>
-                <button id="noBtn">Không bao giờ ❤️</button>
+                <button class="yes-btn" id="yes-btn">Không...</button>
+                <button class="no-btn" id="no-btn">Có, anh yêu! ❤️</button>
             </div>
         </div>
         
-        <div id="thankYou" class="thank-you">
-            <h2>Anh biết em sẽ không rời xa anh! ✨</h2>
+        <div id="thank-you" class="thank-you">
+            <h2>Anh biết em yêu anh! ✨</h2>
             <p>Tình yêu của chúng ta sẽ mãi mãi như những vì sao trong vũ trụ!<br>
-            Anh yêu em nhiều hơn tất cả mọi thứ trên đời! 💖</p>
+            Anh yêu em nhiều hơn tất cả! 💖</p>
         </div>
     </div>
 
     <script>
-        // Galaxy Data
-        const galaxyData = {
-            messages: [
-                "I love you so much! ❤️",
-                "Em là tất cả của anh",
-                "Anh yêu em 💖",
-                "Forever together",
-                "Em là ánh sáng của anh ✨",
-                "Tình yêu vĩnh cửu 💕",
-                "You are my universe 🌟", 
-                "Anh không thể thiếu em",
-                "Em thật tuyệt vời", 
-                "Em làm trái tim anh rạng rỡ 💫", 
-                "Love you forever! 💖",
-                "Em là tất cả của anh! ❤️"
-            ],
-            icons: ["♥", "💖", "❤️", "✨", "💕", "🌟", "💫", "⭐"],
-            colors: {
-                love: "#ff6b9d",
-                birthday: "#4ecdc4",
-                date: "#ff69b4",
-                special: "#f34bce",
-                heart: "#ff69b4"
-            }
-        };
-
-        // Variables
-        const loadingScreen = document.getElementById('loadingScreen');
-        const questionContainer = document.getElementById('questionContainer');
-        const galaxy = document.getElementById('galaxy');
-        const yesBtn = document.getElementById('yesBtn');
-        const noBtn = document.getElementById('noBtn');
-        const mainContent = document.getElementById('mainContent');
-        const thankYou = document.getElementById('thankYou');
-
-        let rotationX = 0;
-        let rotationY = 0;
-        let scale = 1;
-        let isDragging = false;
-        let lastMouseX = 0;
-        let lastMouseY = 0;
-        const activeParticles = new Set();
-        let clickCount = 0;
-
-        // Responsive settings
-        const isMobile = window.innerWidth <= 768;
-        const isSmallMobile = window.innerWidth <= 480;
-        const maxParticles = isSmallMobile ? 150 : isMobile ? 200 : 300;
-        const particleInterval = isMobile ? 150 : 180;
-        const starCount = isSmallMobile ? 200 : isMobile ? 300 : 400;
-
-        let particleSpeedMultiplier = 1;
-
-        // Sad messages for "Yes" button
+        // Configuration
+        const messages = [
+            "Anh yêu em! ❤️", "Em là tất cả của anh", "I love you! 💖",
+            "Forever together ✨", "Em là ánh sáng của anh", "Tình yêu vĩnh cửu 💕",
+            "You are my universe 🌟", "Em thật tuyệt vời", "Love you forever! 💖"
+        ];
+        
+        const hearts = ["♥", "💖", "❤️", "✨", "💕", "🌟", "💫"];
+        
         const sadMessages = [
-            "Anh làm tất cả là vì em mà, sao em nỡ? 💔",
+            "Anh làm tất cả là vì em mà... 💔",
             "Em có biết anh đau lòng như thế nào không? 😢",
-            "Tất cả những gì anh có đều dành cho em... 💙",
             "Anh không thể sống thiếu em được... 😭",
-            "Em là tất cả của anh mà... Sao em có thể? 💔",
-            "Anh đã yêu em hết lòng, tại sao em lại... 😔",
-            "Em có nhớ những ngày đẹp của chúng ta không? 🌹",
-            "Anh sẽ chết nếu mất em... Đừng bỏ anh! 💔",
-            "Em là ánh sáng duy nhất trong đời anh... ✨",
-            "Không có em, anh như kẻ lạc lối trong bóng tối... 🌙"
+            "Em là tất cả của anh mà... 💔",
+            "Anh đã yêu em hết lòng... 😔"
         ];
 
-        // Prevent scrolling and zooming
-        document.addEventListener('touchmove', function(e) {
-            e.preventDefault();
-        }, { passive: false });
+        // Elements
+        const galaxy = document.getElementById('galaxy');
+        const yesBtn = document.getElementById('yes-btn');
+        const noBtn = document.getElementById('no-btn');
+        const mainContent = document.getElementById('main-content');
+        const thankYou = document.getElementById('thank-you');
 
-        document.addEventListener('wheel', function(e) {
-            e.preventDefault();
-        }, { passive: false });
+        let clickCount = 0;
+        let rotationX = 0, rotationY = 0;
+        let isDragging = false;
 
-        // Slow down particles when interacting
-        document.addEventListener('mousedown', () => {
-            particleSpeedMultiplier = 2;
-        });
-        document.addEventListener('mouseup', () => {
-            particleSpeedMultiplier = 1;
-        });
-        document.addEventListener('touchstart', (e) => {
-            if (e.touches.length === 1) particleSpeedMultiplier = 2;
-        });
-        document.addEventListener('touchend', () => {
-            particleSpeedMultiplier = 1;
-        });
-
-        // Galaxy Functions
-        function getRandomMessage() {
-            return galaxyData.messages[Math.floor(Math.random() * galaxyData.messages.length)];
-        }
-
-        function getRandomIcon() {
-            return galaxyData.icons[Math.floor(Math.random() * galaxyData.icons.length)];
-        }
-
-        function getMessageClass(message) {
-            const lowerMessage = message.toLowerCase();
-            if (lowerMessage.includes("love") || lowerMessage.includes("yêu") || lowerMessage.includes("tình")) {
-                return "love";
-            } else if (lowerMessage.includes("birthday") || lowerMessage.includes("sinh nhật")) {
-                return "birthday";
-            } else if (/\d/.test(message) || message.includes("/")) {
-                return "date";
-            } else {
-                return "special";
-            }
-        }
-
-        function createTextParticle() {
-            if (activeParticles.size >= maxParticles) {
-                return;
-            }
-
-            const isIcon = Math.random() > 0.6;
-            const element = document.createElement('div');
-            
-            if (isIcon) {
-                element.className = 'text-particle heart';
-                element.textContent = getRandomIcon();
-            } else {
-                const message = getRandomMessage();
-                element.className = `text-particle ${getMessageClass(message)}`;
-                element.textContent = message;
-            }
-            
-            const xPos = Math.random() * 100;
-            const zPos = (Math.random() - 0.5) * (isMobile ? 300 : 500);
-            const animationDuration = Math.random() * 2 + (isMobile ? 4 : 5);
-            
-            element.style.left = xPos + '%';
-            
-            const baseFontSize = isSmallMobile ? 10 : isMobile ? 14 : 18;
-            const fontSizeVariation = isSmallMobile ? 4 : isMobile ? 6 : 8;
-            element.style.fontSize = (Math.random() * fontSizeVariation + baseFontSize) + 'px';
-            
-            const depthOpacity = Math.max(0.4, 1 - Math.abs(zPos) / (isMobile ? 250 : 400));
-            element.style.opacity = depthOpacity;
-            
-            let startTime = null;
-            let startY = -150;
-            let endY = window.innerHeight + 150;
-            const thisParticleSpeed = particleSpeedMultiplier;
-
-            function animateParticle(timestamp) {
-                if (!startTime) startTime = timestamp;
-                const progress = (timestamp - startTime) / (animationDuration * 1000 * thisParticleSpeed);
-                
-                if (progress < 1) {
-                    const currentY = startY + (endY - startY) * progress;
-                    const opacity = progress < 0.05 ? progress * 20 : 
-                                  progress > 0.95 ? (1 - progress) * 20 : 
-                                  depthOpacity;
-                    
-                    element.style.transform = `translate3d(0, ${currentY}px, ${zPos}px)`;
-                    element.style.opacity = opacity;
-                    
-                    requestAnimationFrame(animateParticle);
-                } else {
-                    if (element.parentNode) {
-                        element.parentNode.removeChild(element);
-                        activeParticles.delete(element);
-                    }
-                }
-            }
-            
-            galaxy.appendChild(element);
-            activeParticles.add(element);
-            requestAnimationFrame(animateParticle);
-        }
-
+        // Create stars
         function createStars() {
-            for (let i = 0; i < starCount; i++) {
+            for (let i = 0; i < 200; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
-                
-                const angle = Math.random() * Math.PI * 10;
-                const radius = Math.random() * (isMobile ? 600 : 1200) + (isMobile ? 200 : 300);
-                const spiralHeight = Math.sin(angle) * (isMobile ? 80 : 120);
-                
-                const x = Math.cos(angle) * radius;
-                const y = spiralHeight + (Math.random() - 0.5) * (isMobile ? 800 : 1500);
-                const z = Math.sin(angle) * radius * 0.4;
-                
-                star.style.left = `calc(50% + ${x}px)`;
-                star.style.top = `calc(50% + ${y}px)`;
-                star.style.transform = `translateZ(${z}px)`;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
                 star.style.animationDelay = Math.random() * 3 + 's';
-                
-                const depthBrightness = Math.max(0.1, 1 - Math.abs(z) / (isMobile ? 600 : 1000));
-                star.style.opacity = depthBrightness;
-                
                 galaxy.appendChild(star);
             }
         }
 
-        function updateGalaxyTransform() {
-            requestAnimationFrame(() => {
-                galaxy.style.transform = `translate(-50%, -50%) rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`;
-            });
-        }
-
-        function startParticleAnimation() {
-            setInterval(() => {
-                createTextParticle();
-            }, particleInterval);
-
-            const initialParticles = isMobile ? 15 : 20;
-            for (let i = 0; i < initialParticles; i++) {
-                setTimeout(() => {
-                    createTextParticle();
-                }, i * (particleInterval * 0.8));
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            const isHeart = Math.random() > 0.7;
+            
+            if (isHeart) {
+                particle.className = 'particle heart';
+                particle.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            } else {
+                particle.className = 'particle';
+                particle.textContent = messages[Math.floor(Math.random() * messages.length)];
             }
-        }
-
-        // Question Interaction Functions
-        function createSparkle(x, y) {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
-            sparkle.style.left = x + 'px';
-            sparkle.style.top = y + 'px';
-            document.body.appendChild(sparkle);
+            
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            
+            galaxy.appendChild(particle);
             
             setTimeout(() => {
-                sparkle.remove();
-            }, 2000);
+                if (particle.parentNode) {
+                    particle.remove();
+                }
+            }, 8000);
         }
 
+        // Create heart rain effect
         function createHeartRain() {
-            for(let i = 0; i < 25; i++) {
+            for (let i = 0; i < 20; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
-                    heart.innerHTML = ['💖', '❤️', '💕', '✨', '🌟', '💫'][Math.floor(Math.random() * 6)];
-                    heart.className = 'heart-rain';
+                    heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.className = 'heart';
                     heart.style.left = Math.random() * 100 + '%';
                     heart.style.animationDelay = Math.random() * 2 + 's';
-                    heart.style.fontSize = (Math.random() * 15 + 20) + 'px';
+                    heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
                     document.body.appendChild(heart);
                     
                     setTimeout(() => heart.remove(), 4000);
-                }, i * 200);
+                }, i * 100);
             }
         }
 
-        function showEmotionalMessage() {
+        // Show sad message
+        function showSadMessage() {
             if (clickCount < sadMessages.length) {
                 const messageDiv = document.createElement('div');
-                messageDiv.className = 'emotional-message';
+                messageDiv.className = 'sad-message';
                 messageDiv.textContent = sadMessages[clickCount];
                 document.body.appendChild(messageDiv);
                 
-                setTimeout(() => {
-                    if (messageDiv.parentNode) {
-                        messageDiv.remove();
-                    }
-                }, 4000);
+                setTimeout(() => messageDiv.remove(), 4000);
             }
         }
 
+        // Move yes button randomly
         function moveYesButton() {
-            const containerRect = questionContainer.getBoundingClientRect();
-            const btnRect = yesBtn.getBoundingClientRect();
+            const container = document.getElementById('container');
+            const containerRect = container.getBoundingClientRect();
             
-            const maxX = containerRect.width - btnRect.width - 60;
-            const maxY = containerRect.height - btnRect.height - 60;
+            const maxX = containerRect.width - 150;
+            const maxY = containerRect.height - 60;
             
-            const randomX = Math.random() * Math.max(maxX, 100);
-            const randomY = Math.random() * Math.max(maxY, 100);
+            const randomX = Math.random() * Math.max(maxX, 50);
+            const randomY = Math.random() * Math.max(maxY, 50);
             
             yesBtn.style.position = 'absolute';
             yesBtn.style.left = randomX + 'px';
             yesBtn.style.top = randomY + 'px';
             yesBtn.classList.add('crazy-move');
             
-            setTimeout(() => {
-                yesBtn.classList.remove('crazy-move');
-            }, 800);
+            setTimeout(() => yesBtn.classList.remove('crazy-move'), 800);
         }
 
-        // Mouse/Touch Interaction
-        function handleInteractionStart(e) {
+        // Mouse interaction for galaxy rotation
+        let lastMouseX = 0, lastMouseY = 0;
+
+        document.addEventListener('mousedown', (e) => {
             isDragging = true;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            lastMouseX = clientX;
-            lastMouseY = clientY;
-            document.body.style.cursor = 'grabbing';
-        }
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
 
-        function handleInteractionMove(e) {
+        document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            e.preventDefault();
             
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            const deltaX = e.clientX - lastMouseX;
+            const deltaY = e.clientY - lastMouseY;
             
-            const deltaX = clientX - lastMouseX;
-            const deltaY = clientY - lastMouseY;
+            rotationY += deltaX * 0.5;
+            rotationX -= deltaY * 0.5;
             
-            const sensitivity = isMobile ? 0.3 : 0.5;
-            rotationY += deltaX * sensitivity;
-            rotationX -= deltaY * sensitivity;
+            galaxy.style.transform = `translate(-50%, -50%) rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
             
-            rotationX = Math.max(-60, Math.min(60, rotationX));
-            
-            updateGalaxyTransform();
-            
-            lastMouseX = clientX;
-            lastMouseY = clientY;
-        }
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
 
-        function handleInteractionEnd() {
+        document.addEventListener('mouseup', () => {
             isDragging = false;
-            document.body.style.cursor = 'grab';
-        }
-
-        // Event Listeners
-        document.addEventListener('mousedown', handleInteractionStart);
-        document.addEventListener('mousemove', handleInteractionMove);
-        document.addEventListener('mouseup', handleInteractionEnd);
-        document.addEventListener('mouseleave', handleInteractionEnd);
-
-        document.addEventListener('touchstart', handleInteractionStart, { passive: false });
-        document.addEventListener('touchmove', handleInteractionMove, { passive: false });
-        document.addEventListener('touchend', handleInteractionEnd);
-
-        // Zoom functionality
-        document.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            const zoomFactor = isMobile ? 0.05 : 0.1;
-            scale += e.deltaY > 0 ? -zoomFactor : zoomFactor;
-            scale = Math.max(0.5, Math.min(2, scale));
-            updateGalaxyTransform();
         });
 
-        // Pinch zoom for mobile
-        let initialDistance = 0;
-        let initialScale = 1;
-
-        document.addEventListener('touchstart', (e) => {
-            if (e.touches.length === 2) {
-                const touch1 = e.touches[0];
-                const touch2 = e.touches[1];
-                initialDistance = Math.hypot(
-                    touch2.clientX - touch1.clientX,
-                    touch2.clientY - touch1.clientY
-                );
-                initialScale = scale;
-            }
-        });
-
-        document.addEventListener('touchmove', (e) => {
-            if (e.touches.length === 2) {
-                e.preventDefault();
-                const touch1 = e.touches[0];
-                const touch2 = e.touches[1];
-                const currentDistance = Math.hypot(
-                    touch2.clientX - touch1.clientX,
-                    touch2.clientY - touch1.clientY
-                );
-                
-                scale = initialScale * (currentDistance / initialDistance);
-                scale = Math.max(0.5, Math.min(2, scale));
-                updateGalaxyTransform();
-            }
-        });
-
-        // Button Event Listeners
+        // Button events
         yesBtn.addEventListener('click', (e) => {
             e.preventDefault();
             clickCount++;
-            
-            const rect = yesBtn.getBoundingClientRect();
-            createSparkle(rect.left + rect.width/2, rect.top + rect.height/2);
-            
-            showEmotionalMessage();
+            showSadMessage();
             moveYesButton();
             
-            // Make the button harder to click each time
-            setTimeout(() => {
-                if (clickCount >= 3) {
-                    yesBtn.style.transform = 'scale(0.8)';
-                }
-                if (clickCount >= 5) {
-                    yesBtn.style.opacity = '0.7';
-                }
-                if (clickCount >= 7) {
-                    yesBtn.style.pointerEvents = 'none';
-                    yesBtn.textContent = 'Không thể bấm được! 😢';
-                    setTimeout(() => {
-                        yesBtn.style.pointerEvents = 'auto';
-                        yesBtn.textContent = 'Có...';
-                    }, 3000);
-                }
-            }, 100);
+            if (clickCount >= 5) {
+                yesBtn.style.opacity = '0.5';
+                yesBtn.textContent = 'Không bấm được! 😢';
+                setTimeout(() => {
+                    yesBtn.style.opacity = '1';
+                    yesBtn.textContent = 'Không...';
+                }, 2000);
+            }
         });
 
         noBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            const rect = noBtn.getBoundingClientRect();
-            createSparkle(rect.left + rect.width/2, rect.top + rect.height/2);
             createHeartRain();
-            
             mainContent.style.display = 'none';
             thankYou.style.display = 'block';
-            
-            // Add extra celebration
-            setTimeout(() => {
-                for(let i = 0; i < 10; i++) {
-                    setTimeout(() => {
-                        createSparkle(
-                            Math.random() * window.innerWidth,
-                            Math.random() * window.innerHeight
-                        );
-                    }, i * 200);
-                }
-            }, 500);
         });
 
-        // Auto-rotation when idle
+        // Auto rotation when idle
         let lastInteraction = Date.now();
-        let autoRotateInterval;
-
-        function updateLastInteraction() {
-            lastInteraction = Date.now();
-        }
-
-        function startAutoRotation() {
-            autoRotateInterval = setInterval(() => {
-                if (Date.now() - lastInteraction > 5000 && !isDragging) {
-                    rotationY += 0.2;
-                    updateGalaxyTransform();
-                }
-            }, 50);
-        }
-
-        document.addEventListener('mousedown', updateLastInteraction);
-        document.addEventListener('touchstart', updateLastInteraction);
-        document.addEventListener('mousemove', updateLastInteraction);
-        document.addEventListener('touchmove', updateLastInteraction);
-
-        // Initialization
-        function initializeGalaxy() {
-            createStars();
-            startParticleAnimation();
-            startAutoRotation();
-            
-            // Hide loading screen
-            setTimeout(() => {
-                loadingScreen.style.opacity = '0';
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                }, 500);
-            }, 2000);
-        }
-
-        // Performance optimization
-        function optimizePerformance() {
-            // Reduce animations on low-end devices
-            if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
-                const reducedStars = Math.floor(starCount * 0.6);
-                const stars = document.querySelectorAll('.star');
-                for(let i = reducedStars; i < stars.length; i++) {
-                    stars[i].remove();
-                }
-            }
-            
-            // Throttle particle creation on mobile
-            if (isMobile) {
-                const originalInterval = particleInterval;
-                setInterval(() => {
-                    if (activeParticles.size > maxParticles * 0.8) {
-                        particleInterval = originalInterval * 1.5;
-                    } else {
-                        particleInterval = originalInterval;
-                    }
-                }, 1000);
-            }
-        }
-
-        // Memory cleanup
-        function cleanupParticles() {
-            setInterval(() => {
-                const particles = document.querySelectorAll('.text-particle');
-                particles.forEach(particle => {
-                    const rect = particle.getBoundingClientRect();
-                    if (rect.top > window.innerHeight + 200 || rect.top < -200) {
-                        if (particle.parentNode) {
-                            particle.parentNode.removeChild(particle);
-                            activeParticles.delete(particle);
-                        }
-                    }
-                });
-            }, 5000);
-        }
-
-        // Handle visibility changes
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                particleSpeedMultiplier = 0.1; // Slow down when tab is hidden
-            } else {
-                particleSpeedMultiplier = 1;
-            }
-        });
-
-        // Handle resize
-        window.addEventListener('resize', () => {
-            // Update mobile detection
-            const newIsMobile = window.innerWidth <= 768;
-            if (newIsMobile !== isMobile) {
-                location.reload(); // Reload if mobile state changes
-            }
-        });
-
-        // Error handling
-        window.addEventListener('error', (e) => {
-            console.error('Galaxy error:', e);
-            // Fallback: ensure loading screen is hidden
-            if (loadingScreen) {
-                loadingScreen.style.display = 'none';
-            }
-        });
-
-        // Start everything when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(() => {
-                    initializeGalaxy();
-                    optimizePerformance();
-                    cleanupParticles();
-                }, 100);
-            });
-        } else {
-            setTimeout(() => {
-                initializeGalaxy();
-                optimizePerformance();
-                cleanupParticles();
-            }, 100);
-        }
-
-        // Add some Easter eggs
-        let secretClickCount = 0;
-        questionContainer.addEventListener('dblclick', () => {
-            secretClickCount++;
-            if (secretClickCount === 3) {
-                const secretMessage = document.createElement('div');
-                secretMessage.className = 'emotional-message';
-                secretMessage.textContent = '🎉 Bạn đã tìm ra Easter Egg! Tình yêu thật kỳ diệu! 🎉';
-                secretMessage.style.background = 'rgba(78, 205, 196, 0.3)';
-                secretMessage.style.borderColor = 'rgba(78, 205, 196, 0.6)';
-                secretMessage.style.color = '#4ecdc4';
-                document.body.appendChild(secretMessage);
-                
-                // Create extra sparkles
-                for(let i = 0; i < 20; i++) {
-                    setTimeout(() => {
-                        createSparkle(
-                            Math.random() * window.innerWidth,
-                            Math.random() * window.innerHeight
-                        );
-                    }, i * 100);
-                }
-                
-                setTimeout(() => secretMessage.remove(), 5000);
-                secretClickCount = 0;
-            }
-        });
-
-        // Konami code easter egg
-        const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
-        let konamiIndex = 0;
         
-        document.addEventListener('keydown', (e) => {
-            if (e.keyCode === konamiCode[konamiIndex]) {
-                konamiIndex++;
-                if (konamiIndex === konamiCode.length) {
-                    // Activate super love mode
-                    document.body.style.filter = 'hue-rotate(180deg) saturate(2)';
-                    createHeartRain();
-                    setTimeout(() => {
-                        document.body.style.filter = '';
-                    }, 10000);
-                    konamiIndex = 0;
-                }
-            } else {
-                konamiIndex = 0;
+        function autoRotate() {
+            if (Date.now() - lastInteraction > 3000 && !isDragging) {
+                rotationY += 0.2;
+                galaxy.style.transform = `translate(-50%, -50%) rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
             }
-        });
+        }
+
+        document.addEventListener('mousedown', () => lastInteraction = Date.now());
+        document.addEventListener('touchstart', () => lastInteraction = Date.now());
+
+        // Initialize
+        function init() {
+            createStars();
+            
+            // Create particles continuously
+            setInterval(createParticle, 1000);
+            
+            // Auto rotation
+            setInterval(autoRotate, 50);
+            
+            // Create some initial particles
+            for (let i = 0; i < 10; i++) {
+                setTimeout(createParticle, i * 200);
+            }
+        }
+
+        // Start when page loads
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
