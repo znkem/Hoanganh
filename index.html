@@ -903,4 +903,200 @@
             orbs.forEach((orb, index) => {
                 const speed = (index + 1) * 0.3;
                 const xPos = (x - 0.5) * speed * 60;
-                const yPos = (y -
+                const yPos = (y -0.5) * speed * 60;
+                
+                orb.style.transform = `translate(${xPos}px, ${yPos}px)`;
+            });
+        });
+
+        // Ripple effect for interactive elements
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+            
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple-effect';
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            button.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        }
+
+        // Add ripple effect to social links
+        document.querySelectorAll('.social-link').forEach(link => {
+            link.addEventListener('click', createRipple);
+        });
+
+        // Parallax scrolling effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.mesh-gradient');
+            const speed = scrolled * 0.5;
+            
+            if (parallax) {
+                parallax.style.transform = `translate3d(0, ${speed}px, 0)`;
+            }
+        });
+
+        // Enhanced intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for scroll animations
+        document.querySelectorAll('.info-item, .social-link, .contact-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Dynamic gradient animation
+        function updateGradient() {
+            const time = Date.now() * 0.001;
+            const hue1 = (Math.sin(time * 0.3) * 30 + 240) % 360;
+            const hue2 = (Math.sin(time * 0.2) * 30 + 280) % 360;
+            const hue3 = (Math.sin(time * 0.4) * 30 + 320) % 360;
+            
+            document.documentElement.style.setProperty(
+                '--primary-gradient', 
+                `linear-gradient(135deg, hsl(${hue1}, 70%, 60%) 0%, hsl(${hue2}, 70%, 60%) 50%, hsl(${hue3}, 70%, 60%) 100%)`
+            );
+            
+            requestAnimationFrame(updateGradient);
+        }
+
+        // Start dynamic gradient after loading
+        setTimeout(updateGradient, 3000);
+
+        // Enhanced keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+            
+            if (e.key === 'Enter' && e.target.classList.contains('social-link')) {
+                e.target.click();
+            }
+        });
+
+        // Performance optimization: throttle scroll events
+        function throttle(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Throttled scroll handler
+        const throttledScrollHandler = throttle(() => {
+            const scrolled = window.pageYOffset;
+            const profileCard = document.querySelector('.profile-card');
+            
+            if (profileCard) {
+                const translateY = scrolled * 0.1;
+                profileCard.style.transform = `translateY(${translateY}px)`;
+            }
+        }, 16);
+
+        window.addEventListener('scroll', throttledScrollHandler);
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hide loading screen
+            hideLoading();
+            
+            // Add initial animations
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 2500);
+            
+            // Preload images and fonts
+            const preloadImages = () => {
+                const imageUrls = [
+                    // Add any image URLs here if needed
+                ];
+                
+                imageUrls.forEach(url => {
+                    const img = new Image();
+                    img.src = url;
+                });
+            };
+            
+            preloadImages();
+            
+            // Initialize social media link tracking
+            document.querySelectorAll('.social-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const platform = e.target.closest('.social-link').classList[1];
+                    console.log(`Clicked on ${platform} link`);
+                    
+                    // Add analytics tracking here if needed
+                    // gtag('event', 'social_click', { platform: platform });
+                });
+            });
+        });
+
+        // Enhanced error handling
+        window.addEventListener('error', (e) => {
+            console.error('JavaScript error:', e.error);
+            // Could add error reporting service here
+        });
+
+        // Service Worker registration for offline functionality (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Uncomment to register service worker
+                // navigator.serviceWorker.register('/sw.js')
+                //     .then(registration => console.log('SW registered'))
+                //     .catch(registrationError => console.log('SW registration failed'));
+            });
+        }
+
+        // Add CSS animation keyframes dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .loaded .profile-card {
+                animation: profileCardFloat 6s ease-in-out infinite;
+            }
+            
+            @keyframes profileCardFloat {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+    </script>
+</body>
+</html>
