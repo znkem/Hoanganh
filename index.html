@@ -221,8 +221,32 @@
         .title {
             font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             font-weight: 400;
+        }
+
+        /* Personal Info */
+        .personal-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-item {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-item i {
+            margin-right: 8px;
+            color: #4ecdc4;
+            width: 16px;
         }
 
         /* Social Links */
@@ -295,6 +319,7 @@
 
         .zalo {
             background: linear-gradient(135deg, #0084ff, #0068cc);
+            cursor: pointer;
         }
 
         .zalo:hover {
@@ -336,6 +361,77 @@
             color: #4ecdc4;
         }
 
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-content h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #ff6b9d, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-content p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .close-btn {
+            background: linear-gradient(135deg, #ff6b9d, #4ecdc4);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .profile-card {
@@ -366,6 +462,11 @@
                 height: 120px;
                 font-size: 50px;
             }
+
+            .modal-content {
+                margin: 25% auto;
+                padding: 25px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -379,6 +480,11 @@
 
             .social-link {
                 padding: 12px 15px;
+            }
+
+            .modal-content {
+                margin: 30% auto;
+                padding: 20px;
             }
         }
 
@@ -423,6 +529,15 @@
         <div class="spinner"></div>
     </div>
 
+    <!-- Zalo Modal -->
+    <div id="zaloModal" class="modal">
+        <div class="modal-content">
+            <h2><i class="fas fa-phone"></i> Zalo Contact</h2>
+            <p>Đây là Zalo của Nguyễn Hoàng Anh, hãy liên hệ khi cần thiết!</p>
+            <button class="close-btn" onclick="closeModal()">Đóng</button>
+        </div>
+    </div>
+
     <!-- Animated Background -->
     <div class="bg-animation">
         <div class="floating-shapes">
@@ -441,8 +556,23 @@
                 <i class="fas fa-user"></i>
             </div>
             
-            <h1 class="name">Nguyễn Hoàng Anh ( Kẽm )</h1>
+            <h1 class="name">Nguyễn Hoàng Anh (Zn)</h1>
             <p class="title">Developer & Content Creator</p>
+            
+            <div class="personal-info">
+                <div class="info-item">
+                    <i class="fas fa-birthday-cake"></i>
+                    <span>Ngày sinh: 29/07/2004</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Hiện tại: Sinh viên</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-code"></i>
+                    <span>Ngành: Kỹ Thuật Phần Mềm (IT)</span>
+                </div>
+            </div>
             
             <div class="social-links">
                 <a href="https://www.facebook.com/nguynanh2974" target="_blank" class="social-link facebook">
@@ -460,7 +590,7 @@
                     TikTok
                 </a>
                 
-                <a href="tel:0963798255" class="social-link zalo">
+                <a href="#" class="social-link zalo" onclick="openZaloModal(event)">
                     <i class="fas fa-phone"></i>
                     Zalo
                 </a>
@@ -469,8 +599,8 @@
             <div class="contact-info">
                 <h3><i class="fas fa-address-book"></i> Liên hệ</h3>
                 <div class="contact-item">
-                    <i class="fas fa-mobile-alt"></i>
-                    <span>0963 798 255</span>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Địa Chỉ: Phường Dĩ An, Thành phố Hồ Chí Minh</span>
                 </div>
                 <div class="contact-item">
                     <i class="fas fa-heart"></i>
@@ -481,6 +611,24 @@
     </div>
 
     <script>
+        // Modal functions
+        function openZaloModal(event) {
+            event.preventDefault();
+            document.getElementById('zaloModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('zaloModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('zaloModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
         // Create stars
         function createStars() {
             const starsContainer = document.getElementById('stars');
@@ -523,6 +671,9 @@
         // Add click ripple effect
         document.querySelectorAll('.social-link').forEach(link => {
             link.addEventListener('click', function(e) {
+                // Skip ripple for zalo button
+                if (this.classList.contains('zalo')) return;
+                
                 const ripple = document.createElement('span');
                 const rect = this.getBoundingClientRect();
                 const size = Math.max(rect.width, rect.height);
