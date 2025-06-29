@@ -426,6 +426,14 @@
             background: linear-gradient(135deg, #ff0050, #000000);
         }
 
+        .locket {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef, #fecfef);
+        }
+
+        .locket:hover {
+            background: linear-gradient(135deg, #ff6b9d, #ff9a9e, #fad0c4);
+        }
+
         .zalo {
             background: linear-gradient(135deg, #0084ff, #0068cc, #0052a3);
             cursor: pointer;
@@ -455,13 +463,12 @@
             transform: translateY(-2px);
         }
 
-   .contact-info h3 {
-    color: black; /* hoặc dùng var(--text-primary) nếu biến đó là màu đen */
-    margin-bottom: 20px;
-    font-size: 1.4rem;
-    font-weight: 600;
-}
-
+        .contact-info h3 {
+            color: black;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
 
         .contact-item {
             display: flex;
@@ -818,6 +825,11 @@
                     TikTok
                 </a>
                 
+                <a href="https://locket.cam/zn29" target="_blank" class="social-link locket">
+                    <i class="fas fa-camera"></i>
+                    Locket
+                </a>
+                
                 <a href="#" class="social-link zalo" onclick="openZaloModal(event)">
                     <i class="fas fa-phone"></i>
                     Zalo
@@ -892,40 +904,39 @@
             }, 2000);
         }
 
-        // Advanced mouse tracking effect
+    // Advanced mouse tracking effect (tiếp theo)
         document.addEventListener('mousemove', (e) => {
             const orbs = document.querySelectorAll('.orb');
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
-
+            
             orbs.forEach((orb, index) => {
-                const speed = (index + 1) * 0.3;
-                const xPos = (x - 0.5) * speed * 60;
-                const yPos = (y -0.5) * speed * 60;
+                const speed = (index + 1) * 0.02;
+                const offsetX = (x - 0.5) * 100 * speed;
+                const offsetY = (y - 0.5) * 100 * speed;
                 
-                orb.style.transform = `translate(${xPos}px, ${yPos}px)`;
+                orb.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             });
         });
 
-        // Ripple effect for interactive elements
+        // Ripple effect for buttons
         function createRipple(event) {
             const button = event.currentTarget;
-            const rect = button.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = event.clientX - rect.left - size / 2;
-            const y = event.clientY - rect.top - size / 2;
+            const circle = document.createElement('span');
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
             
-            const ripple = document.createElement('span');
-            ripple.className = 'ripple-effect';
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
+            circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+            circle.classList.add('ripple-effect');
             
-            button.appendChild(ripple);
-            
-            setTimeout(() => {
+            const ripple = button.getElementsByClassName('ripple-effect')[0];
+            if (ripple) {
                 ripple.remove();
-            }, 600);
+            }
+            
+            button.appendChild(circle);
         }
 
         // Add ripple effect to social links
@@ -933,15 +944,18 @@
             link.addEventListener('click', createRipple);
         });
 
-        // Parallax scrolling effect
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.mesh-gradient');
-            const speed = scrolled * 0.5;
-            
-            if (parallax) {
-                parallax.style.transform = `translate3d(0, ${speed}px, 0)`;
-            }
+        // Smooth scroll behavior for any anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
         });
 
         // Enhanced intersection observer for animations
@@ -953,148 +967,96 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
                 }
             });
         }, observerOptions);
 
-        // Observe elements for scroll animations
+        // Observe elements for animation
         document.querySelectorAll('.info-item, .social-link, .contact-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(el);
         });
 
-        // Dynamic gradient animation
-        function updateGradient() {
-            const time = Date.now() * 0.001;
-            const hue1 = (Math.sin(time * 0.3) * 30 + 240) % 360;
-            const hue2 = (Math.sin(time * 0.2) * 30 + 280) % 360;
-            const hue3 = (Math.sin(time * 0.4) * 30 + 320) % 360;
-            
-            document.documentElement.style.setProperty(
-                '--primary-gradient', 
-                `linear-gradient(135deg, hsl(${hue1}, 70%, 60%) 0%, hsl(${hue2}, 70%, 60%) 50%, hsl(${hue3}, 70%, 60%) 100%)`
-            );
-            
-            requestAnimationFrame(updateGradient);
+        // Advanced performance optimization
+        let ticking = false;
+        function updateParallax() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    // Parallax effects can be added here
+                    ticking = false;
+                });
+                ticking = true;
+            }
         }
 
-        // Start dynamic gradient after loading
-        setTimeout(updateGradient, 3000);
+        window.addEventListener('scroll', updateParallax);
 
-        // Enhanced keyboard navigation
+        // Enhanced resize handler
+        function handleResize() {
+            // Recalculate particle positions if needed
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                if (parseFloat(particle.style.left) > window.innerWidth) {
+                    particle.style.left = Math.random() * window.innerWidth + 'px';
+                }
+            });
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        // Theme detection and adjustment
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // Dark mode adjustments if needed
+            document.documentElement.style.setProperty('--glass-bg', 'rgba(255, 255, 255, 0.05)');
+        }
+
+        // Keyboard accessibility
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal();
             }
-            
-            if (e.key === 'Enter' && e.target.classList.contains('social-link')) {
-                e.target.click();
+        });
+
+        // Add focus management for modal
+        const modal = document.getElementById('zaloModal');
+        const closeBtn = document.querySelector('.close-btn');
+
+        modal.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                closeBtn.focus();
             }
         });
 
-        // Performance optimization: throttle scroll events
-        function throttle(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
-        // Throttled scroll handler
-        const throttledScrollHandler = throttle(() => {
-            const scrolled = window.pageYOffset;
-            const profileCard = document.querySelector('.profile-card');
-            
-            if (profileCard) {
-                const translateY = scrolled * 0.1;
-                profileCard.style.transform = `translateY(${translateY}px)`;
-            }
-        }, 16);
-
-        window.addEventListener('scroll', throttledScrollHandler);
-
-        // Initialize everything when DOM is loaded
+        // Initialize loading screen
         document.addEventListener('DOMContentLoaded', () => {
-            // Hide loading screen
             hideLoading();
             
-            // Add initial animations
-            setTimeout(() => {
-                document.body.classList.add('loaded');
-            }, 2500);
-            
-            // Preload images and fonts
-            const preloadImages = () => {
-                const imageUrls = [
-                    // Add any image URLs here if needed
-                ];
-                
-                imageUrls.forEach(url => {
-                    const img = new Image();
-                    img.src = url;
-                });
-            };
-            
-            preloadImages();
-            
-            // Initialize social media link tracking
-            document.querySelectorAll('.social-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    const platform = e.target.closest('.social-link').classList[1];
-                    console.log(`Clicked on ${platform} link`);
-                    
-                    // Add analytics tracking here if needed
-                    // gtag('event', 'social_click', { platform: platform });
-                });
+            // Add stagger animation to elements
+            const animateElements = document.querySelectorAll('.info-item, .social-link');
+            animateElements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
             });
         });
 
-        // Enhanced error handling
-        window.addEventListener('error', (e) => {
-            console.error('JavaScript error:', e.error);
-            // Could add error reporting service here
-        });
-
-        // Service Worker registration for offline functionality (optional)
-        if ('serviceWorker' in navigator) {
+        // Performance monitoring
+        if ('performance' in window) {
             window.addEventListener('load', () => {
-                // Uncomment to register service worker
-                // navigator.serviceWorker.register('/sw.js')
-                //     .then(registration => console.log('SW registered'))
-                //     .catch(registrationError => console.log('SW registration failed'));
+                setTimeout(() => {
+                    const perfData = performance.getEntriesByType('navigation')[0];
+                    if (perfData.loadEventEnd - perfData.loadEventStart > 3000) {
+                        console.log('Slow loading detected, optimizing...');
+                        // Reduce particle frequency for slower devices
+                        clearInterval(window.particleInterval);
+                        window.particleInterval = setInterval(createParticle, 600);
+                    }
+                }, 1000);
             });
         }
 
-        // Add CSS animation keyframes dynamically
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            
-            .loaded .profile-card {
-                animation: profileCardFloat 6s ease-in-out infinite;
-            }
-            
-            @keyframes profileCardFloat {
-                0%, 100% { transform: translateY(0px); }
-                50% { transform: translateY(-10px); }
-            }
-        `;
-        document.head.appendChild(style);
-
-    </script>
-</body>
-</html>
+        // Store particle interval for potential cleanup
+        window.particleInterval = setInterval(createParticle, 300);
