@@ -28,6 +28,7 @@
             padding: 30px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 100%; /* Đảm bảo container không bị cứng */
         }
         
         h1 {
@@ -136,27 +137,29 @@
         }
         
         .icon img {
-            width: 50px;
-            height: 70px;
+            width: 80%;
+            height: 80%;
             object-fit: contain;
             pointer-events: none;
         }
         
+        /* --- PHẦN GRID TỐI ƯU --- */
         #grid {
             display: grid;
-            gap: 10px;
+            gap: 8px; /* Khoảng cách giữa các ô */
             justify-content: center;
             margin: 25px auto;
+            width: 100%;
         }
         
         .cell {
-            width: 70px;
-            height: 95px;
+            width: 100%; /* Chiếm hết chiều rộng ô lưới cho phép */
+            aspect-ratio: 3/4; /* Giữ tỷ lệ khung hình chữ nhật lá bài */
             background: rgba(0, 0, 0, 0.4);
             border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
+            border-radius: 8px; /* Bo góc nhỏ hơn chút để đỡ bị thô khi ô nhỏ */
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -167,12 +170,12 @@
         .cell:hover {
             background: rgba(0, 0, 0, 0.5);
             border-color: rgba(255, 255, 255, 0.5);
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
         
         .cell.selected {
-            border: 4px solid gold;
-            box-shadow: 0 0 20px gold;
+            border: 3px solid gold;
+            box-shadow: 0 0 10px gold;
         }
         
         .cell.matched {
@@ -183,31 +186,31 @@
         
         @keyframes matchPulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.05); }
         }
         
         .cell img {
-            width: 100%;
-            height: 100%;
+            width: 90%;
+            height: 90%;
             object-fit: contain;
-            border-radius: 10px;
+            border-radius: 4px;
             pointer-events: none;
         }
         
         .cell.matched::after {
             content: '✓';
             position: absolute;
-            top: 5px;
-            right: 5px;
+            top: 2px;
+            right: 2px;
             background: #4caf50;
             color: white;
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 10px;
             font-weight: bold;
         }
         
@@ -270,38 +273,45 @@
             font-weight: bold;
         }
         
+        /* RESPONSIVE CHO MOBILE */
         @media (max-width: 600px) {
             body {
-                padding: 10px;
+                padding: 5px; /* Giảm padding body */
             }
             
             .container {
-                padding: 20px;
+                padding: 15px 10px; /* Giảm padding container */
+                max-width: 100%;
             }
             
             h1 {
                 font-size: 1.5em;
             }
             
-            .controls {
-                font-size: 0.9em;
-            }
-            
-            .icon {
-                width: 50px;
-                height: 70px;
-            }
-            
-            .icon img {
-                width: 40px;
-                height: 60px;
+            /* Tối ưu Grid cho màn hình nhỏ */
+            #grid {
+                gap: 4px; /* Giảm khoảng cách giữa các ô */
             }
             
             .cell {
-                width: 60px;
-                height: 80px;
+                border-width: 1px; /* Viền mỏng hơn */
+                border-radius: 6px;
             }
             
+            .cell.selected {
+                border-width: 2px;
+            }
+
+            .controls {
+                font-size: 0.9em;
+                gap: 10px;
+            }
+            
+            .icon {
+                width: 45px;
+                height: 60px;
+            }
+
             .stat-number {
                 font-size: 1.5em;
             }
@@ -435,7 +445,8 @@
             const rows = parseInt(rowsInput.value);
             const cols = parseInt(colsInput.value);
             
-            grid.style.gridTemplateColumns = `repeat(${cols}, 70px)`;
+            // --- THAY ĐỔI QUAN TRỌNG: Sử dụng 'fr' thay vì 'px' cứng ---
+            grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
             
             const totalCells = rows * cols;
             document.getElementById("totalCells").textContent = totalCells;
