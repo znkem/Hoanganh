@@ -1,1383 +1,281 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nguyễn Hoàng Anh - Profile</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Sự kiện lật thẻ Play Together</title>
     <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --accent-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.18);
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
-            --shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            --shadow-hover: 0 25px 50px rgba(0, 0, 0, 0.25);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* CSS: Giao diện và Style */
         body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            background: var(--primary-gradient);
-            overflow-x: hidden;
-            position: relative;
-            scroll-behavior: smooth;
-        }
-
-        /* Simplified Background Animation */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            overflow: hidden;
-        }
-
-        .mesh-gradient {
-            position: absolute;
-            width: 120%;
-            height: 120%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(120, 200, 255, 0.2) 0%, transparent 50%);
-            animation: meshMove 15s ease-in-out infinite;
-        }
-
-        @keyframes meshMove {
-            0%, 100% { transform: translate(-5%, -5%) rotate(0deg); }
-            50% { transform: translate(-10%, -10%) rotate(2deg); }
-        }
-
-        /* Reduced floating orbs */
-        .floating-orbs {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(1px);
-            animation: float 10s ease-in-out infinite;
-        }
-
-        .orb:nth-child(1) {
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, rgba(255, 107, 157, 0.3), transparent 70%);
-            top: 15%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .orb:nth-child(2) {
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, rgba(78, 205, 196, 0.25), transparent 70%);
-            top: 50%;
-            right: 15%;
-            animation-delay: 3s;
-        }
-
-        @keyframes float {
-            0%, 100% { 
-                transform: translate(0, 0) scale(1); 
-                opacity: 0.4;
-            }
-            50% { 
-                transform: translate(15px, -15px) scale(1.05); 
-                opacity: 0.6;
-            }
-        }
-
-        /* Simplified particle system - fewer particles */
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            animation: particleRise 8s linear infinite;
-        }
-
-        @keyframes particleRise {
-            0% {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-        }
-
-        /* Main Container */
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            background-color: #1a1a1a; /* Màu nền tối */
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
             padding: 20px;
-            position: relative;
-            z-index: 1;
         }
 
-        .profile-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 28px;
-            padding: 50px 40px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--glass-border);
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-            animation: cardEntrance 0.8s ease-out;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .profile-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        @keyframes cardEntrance {
-            0% {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .profile-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #ff6b9d, #4ecdc4, #ffe66d, #c471ed, #ff6b9d);
-            background-size: 200% 100%;
-            animation: gradientShift 3s linear infinite;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 200% 0%; }
-        }
-
-        /* Simplified Avatar */
-        .avatar-container {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 30px;
-        }
-
-        .avatar {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 60px;
-            color: white;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            position: relative;
-            animation: avatarPulse 6s ease-in-out infinite;
-            transition: transform 0.2s ease;
-        }
-
-        .avatar:hover {
-            transform: scale(1.03);
-        }
-
-        @keyframes avatarPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.01); }
-        }
-
-        .avatar::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            left: -6px;
-            right: -6px;
-            bottom: -6px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, #ff6b9d, #4ecdc4, #ffe66d, #c471ed, #ff6b9d);
-            z-index: -1;
-            animation: avatarRotate 8s linear infinite;
-        }
-
-        @keyframes avatarRotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Enhanced Typography */
-        .name {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            font-weight: 800;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #ff6b9d, #4ecdc4, #ffe66d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 200% 200%;
-            animation: textShimmer 4s ease-in-out infinite;
-        }
-
-        @keyframes textShimmer {
-            0%, 100% { 
-                background-position: 0% 50%; 
-            }
-            50% { 
-                background-position: 100% 50%; 
-            }
-        }
-
-        .title {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 25px;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-        }
-
-        /* Modern Info Cards */
-        .personal-info {
-            background: var(--glass-bg);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            transition: transform 0.2s ease, background 0.2s ease;
-        }
-
-        .personal-info:hover {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .info-item {
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .info-item:hover {
-            color: var(--text-primary);
-        }
-
-        .info-item i {
-            margin-right: 10px;
-            color: #4ecdc4;
-            width: 18px;
-            font-size: 1rem;
-        }
-
-        /* Optimized Social Links */
-        .social-links {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 18px 24px;
-            border-radius: 20px;
-            text-decoration: none;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(8px);
-        }
-
-        .social-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-        }
-
-        .facebook {
-            background: linear-gradient(135deg, #1877f2, #42a5f5);
-        }
-
-        .facebook:hover {
-            background: linear-gradient(135deg, #1565c0, #1877f2);
-        }
-
-        .instagram {
-            background: linear-gradient(135deg, #405de6, #833ab4, #c13584, #e1306c);
-        }
-
-        .instagram:hover {
-            background: linear-gradient(135deg, #833ab4, #fd1d1d);
-        }
-
-        .tiktok {
-            background: linear-gradient(135deg, #000000, #ff0050);
-        }
-
-        .tiktok:hover {
-            background: linear-gradient(135deg, #ff0050, #000000);
-        }
-
-        .zalo {
-            background: linear-gradient(135deg, #0084ff, #0068cc);
-            cursor: pointer;
-        }
-
-        .zalo:hover {
-            background: linear-gradient(135deg, #0068cc, #0084ff);
-        }
-
-        .locket {
-            background: linear-gradient(135deg, #ff9a56, #ff6347);
-            cursor: pointer;
-        }
-
-        .locket:hover {
-            background: linear-gradient(135deg, #ff6347, #ff1744);
-        }
-
-        /* NEW: Threads button */
-        .threads {
-            background: linear-gradient(135deg, #000000, #333333);
-        }
-        .threads:hover {
-            background: linear-gradient(135deg, #333333, #000000);
-        }
-
-        .social-link i {
-            margin-right: 12px;
-            font-size: 1.3rem;
-        }
-
-        /* Enhanced Contact Info - Redesigned */
-        .contact-info {
-            margin-top: 30px;
-            padding: 0;
-            background: transparent;
-            border: none;
-            border-radius: 0;
-            backdrop-filter: none;
-            transition: none;
-        }
-
-        .contact-info:hover {
-            transform: none;
-        }
-
-        .contact-info h3 {
-            color: var(--text-primary);
+        h1 {
+            font-weight: normal;
             margin-bottom: 20px;
-            font-size: 1.4rem;
-            font-weight: 700;
-            text-align: center;
-            background: linear-gradient(135deg, #ff6b9d, #4ecdc4, #ffe66d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        }
+
+        /* Bộ đếm ngược */
+        .timer-container {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        .timer-icon {
+            margin-right: 5px;
+        }
+
+        /* Khu vực điều khiển (Input + Button) */
+        .controls {
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             gap: 10px;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            padding: 18px 22px;
-            background: var(--glass-bg);
-            border-radius: 18px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            text-align: left;
-            word-break: break-word;
-        }
-
-        .contact-item:hover {
-            color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .contact-item i {
-            margin-right: 15px;
-            color: #4ecdc4;
-            font-size: 1.2rem;
-            min-width: 20px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .contact-item .contact-text {
-            flex: 1;
-            line-height: 1.4;
-        }
-
-        .contact-item .contact-label {
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 2px;
-            display: block;
-        }
-
-        .contact-item .contact-value {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        /* Location specific styling */
-        .location-item {
-            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(78, 205, 196, 0.1));
-        }
-
-        .location-item:hover {
-            background: linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(78, 205, 196, 0.15));
-        }
-
-        .location-item i {
-            color: #ff6b9d;
-        }
-
-        /* Email specific styling */
-        .email-item {
-            background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(255, 230, 109, 0.1));
-        }
-
-        .email-item:hover {
-            background: linear-gradient(135deg, rgba(78, 205, 196, 0.15), rgba(255, 230, 109, 0.15));
-        }
-
-        .email-item i {
-            color: #4ecdc4;
-        }
-
-        /* Simplified Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 10000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            animation: modalFadeIn 0.2s ease;
-        }
-
-        @keyframes modalFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            margin: 15% auto;
-            padding: 35px;
-            border-radius: 24px;
-            width: 90%;
-            max-width: 470px;
-            text-align: center;
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow);
-            animation: modalSlideIn 0.3s ease;
-            position: relative;
-        }
-
-        @keyframes modalSlideIn {
-            0% {
-                opacity: 0;
-                transform: translateY(-20px) scale(0.95);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .modal-content h2 {
-            color: var(--text-primary);
             margin-bottom: 20px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #ff6b9d, #4ecdc4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .modal-content p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            line-height: 1.5;
-            margin-bottom: 25px;
-            font-weight: 500;
-        }
-
-        .close-btn {
-            background: linear-gradient(135deg, #ff6b9d, #4ecdc4);
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 18px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .close-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-        }
-
-        /* New: button row + outline button for cancel */
-        .button-row {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
             flex-wrap: wrap;
         }
-        .close-btn.outline {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--glass-border);
-            box-shadow: none;
-        }
-        .close-btn.outline:hover {
-            background: rgba(255,255,255,0.08);
+
+        input {
+            padding: 8px;
+            border-radius: 4px;
+            border: none;
+            width: 50px;
+            text-align: center;
+            font-size: 16px;
         }
 
-        /* Simplified Loading Screen */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
+        button {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            background-color: #f0f0f0;
+            color: #333;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #ccc;
+        }
+
+        button.btn-back {
+            background-color: #ddd;
+        }
+
+        /* Lưới Game */
+        .game-board {
+            display: grid;
+            gap: 10px;
+            justify-content: center;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+
+        /* Thẻ bài (Card) */
+        .card {
+            background-color: transparent;
+            width: 70px; /* Kích thước thẻ */
+            height: 90px;
+            perspective: 1000px; /* Tạo hiệu ứng 3D */
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
             width: 100%;
             height: 100%;
-            background: var(--primary-gradient);
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 8px;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            z-index: 9999;
-            transition: opacity 0.4s ease;
+            justify-content: center;
+            font-size: 30px;
         }
 
-        .loading.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            border-top: 3px solid #4ecdc4;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-text {
+        /* Mặt sau (khi chưa lật) - Màu xám */
+        .card-front {
+            background-color: #444;
             color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-top: 15px;
-            opacity: 0.8;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .profile-card {
-                padding: 35px 25px;
-                margin: 15px;
-                border-radius: 24px;
-            }
-
-            .avatar {
-                width: 130px;
-                height: 130px;
-                font-size: 50px;
-            }
-
-            .name {
-                font-size: 2rem;
-            }
-
-            .title {
-                font-size: 1.1rem;
-            }
-
-            .social-links {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-
-            .social-link {
-                padding: 15px 20px;
-                font-size: 0.95rem;
-            }
-
-            .modal-content {
-                margin: 20% auto;
-                padding: 25px;
-            }
-
-            .personal-info {
-                padding: 20px;
-            }
-
-            .contact-item {
-                padding: 15px 18px;
-                font-size: 0.9rem;
-            }
-
-            .contact-item i {
-                font-size: 1.1rem;
-                margin-right: 12px;
-            }
+        /* Mặt trước (khi lật lên) - Có viền màu */
+        .card-back {
+            background-color: #2a2a2a;
+            transform: rotateY(180deg);
+            border: 2px solid transparent;
+            /* Tạo hiệu ứng viền cầu vồng như trong ảnh */
+            background-image: linear-gradient(#2a2a2a, #2a2a2a), 
+                              linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+        }
+        
+        /* Icon trong thẻ */
+        .card-back span {
+            font-size: 35px; /* Kích thước icon */
         }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 10px;
-            }
-
-            .profile-card {
-                padding: 25px 18px;
-                border-radius: 20px;
-            }
-
-            .avatar {
-                width: 110px;
-                height: 110px;
-                font-size: 45px;
-            }
-
-            .name {
-                font-size: 1.7rem;
-            }
-
-            .social-link {
-                padding: 12px 18px;
-                font-size: 0.9rem;
-            }
-
-            .modal-content {
-                margin: 25% auto;
-                padding: 20px;
-                border-radius: 20px;
-            }
-
-            .personal-info {
-                padding: 18px;
-                border-radius: 18px;
-            }
-
-            .contact-item {
-                padding: 14px 16px;
-                font-size: 0.85rem;
-                border-radius: 16px;
-            }
-
-            .contact-item i {
-                font-size: 1rem;
-                margin-right: 10px;
-            }
-
-            .contact-info h3 {
-                font-size: 1.2rem;
-                margin-bottom: 15px;
-            }
-        }
-
-        /* Performance optimizations */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        /* Focus states for accessibility */
-        .social-link:focus,
-        .close-btn:focus,
-        .contact-item:focus {
-            outline: 2px solid #4ecdc4;
-            outline-offset: 2px;
-        }
-
-        /* Touch device optimizations */
-        @media (hover: none) and (pointer: coarse) {
-            .profile-card:hover {
-                transform: none;
-            }
-            
-            .social-link:hover {
-                transform: none;
-            }
-            
-            .avatar:hover {
-                transform: none;
-            }
-
-            .contact-item:hover {
-                transform: none;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <div class="loading-text">Đang tải...</div>
+
+    <h1>Sự kiện lật thẻ Play<br>Together</h1>
+
+    <div class="timer-container">
+        ⏰ Kết thúc sau: <span id="countdown">Đang tải...</span>
     </div>
 
-    <!-- Zalo Modal (giữ nguyên, không dùng tới khi đã có confirm chung) -->
-    <div id="zaloModal" class="modal">
-        <div class="modal-content">
-            <h2><i class="fas fa-phone"></i> Zalo Contact</h2>
-            <p>Đây là Zalo của Nguyễn Hoàng Anh, hãy liên hệ khi cần thiết! : 0388486348</p>
-            <button class="close-btn" onclick="closeModal()">Đóng</button>
+    <div class="controls">
+        <label>Hàng <input type="number" id="rows" value="4" min="2" max="6"></label>
+        <label>Cột <input type="number" id="cols" value="4" min="2" max="6"></label>
+        <button onclick="createGame()">Tạo mới</button>
+    </div>
+    <div class="controls">
+        <button class="btn-back" onclick="alert('Quay lại menu chính')">Quay lại</button>
+    </div>
+
+    <div class="game-board" id="gameBoard">
         </div>
-    </div>
-
-    <!-- NEW: Confirm Modal (áp dụng cho mọi nút trước khi mở liên kết) -->
-    <div id="confirmModal" class="modal" aria-hidden="true">
-        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
-            <h2 id="confirmTitle"><i class="fas fa-exclamation-circle"></i> Xác nhận</h2>
-            <p id="confirmMessage">Bạn chắc chứ?</p>
-            <div class="button-row">
-                <button class="close-btn" id="confirmYes">Xác nhận</button>
-                <button class="close-btn outline" id="confirmNo">Để tôi suy nghĩ sau</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- NEW: Email Options Modal -->
-    <div id="emailModal" class="modal" aria-hidden="true">
-        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="emailTitle">
-            <h2 id="emailTitle"><i class="fas fa-envelope-open-text"></i> Email</h2>
-            <p>Chọn thao tác với email của Hoàng Anh.</p>
-            <div class="button-row">
-                <button class="close-btn" id="btnCopyEmail"><i class="fas fa-copy"></i> Sao chép</button>
-                <button class="close-btn outline" id="btnOpenGmail"><i class="fas fa-paper-plane"></i> Mở Gmail</button>
-                <button class="close-btn outline" id="btnCloseEmail">Đóng</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Optimized Background -->
-    <div class="bg-animation">
-        <div class="mesh-gradient"></div>
-        <div class="floating-orbs">
-            <div class="orb"></div>
-            <div class="orb"></div>
-        </div>
-        <div class="particles" id="particles"></div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container">
-        <div class="profile-card">
-            <div class="avatar-container">
-                <div class="avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-            </div>
-            
-            <h1 class="name">Nguyễn Hoàng Anh (Zn)</h1>
-            <p class="title">Gọi tớ là Kẽm</p>
-            
-            <div class="personal-info">
-                <div class="info-item">
-                    <i class="fas fa-birthday-cake"></i>
-                    <span>Ngày sinh: 29/07/2004</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Hiện tại: Sinh viên</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-code"></i>
-                    <span>Ngành: Kỹ Thuật Phần Mềm (IT)</span>
-                </div>
-            </div>
-            
-            <div class="social-links">
-                <a href="https://www.facebook.com/XinYing117" target="_blank" class="social-link facebook" data-label="Facebook">
-                    <i class="fab fa-facebook-f"></i>
-                    Facebook
-                </a>
-                
-                <a href="https://www.instagram.com/xinying_hna/" target="_blank" class="social-link instagram" data-label="Instagram">
-                    <i class="fab fa-instagram"></i>
-                    Instagram
-                </a>
-                
-                <a href="https://www.tiktok.com/@ying2974" target="_blank" class="social-link tiktok" data-label="TikTok">
-                    <i class="fab fa-tiktok"></i>
-                    TikTok
-                </a>
-
-          <!-- NEW: Threads -->
-                <a href="https://www.threads.net/@xinying_hna" target="_blank"
-                  class="social-link threads" data-label="Threads" aria-label="Threads">
-                 <i class="fa-brands fa-threads" style="font-size:20px; margin-right:10px;"></i>
-              Threads
-                </a>
-
-
-                
-               <a href="https://zalo.me/0388486348" target="_blank" class="social-link zalo" data-label="Zalo">
-                <i class="fas fa-phone"></i>
-                    Zalo
-                </a>
-
-                
-                <a href="https://locket.cam/zn29" target="_blank" class="social-link locket" data-label="Locket">
-                    <i class="fas fa-camera"></i>
-                    Locket
-                </a>
-            </div>
-
-            <div class="contact-info">
-                <h3>
-                    <i class="fas fa-address-book"></i>
-                    Thông tin liên hệ
-                </h3>
-                <div class="contact-grid">
-                    <div class="contact-item location-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div class="contact-text">
-                            <span class="contact-label">Địa chỉ</span>
-                            <span class="contact-value">Phường Dĩ An, TP. Hồ Chí Minh</span>
-                        </div>
-                    </div>
-                    <div class="contact-item email-item" tabindex="0" role="button" aria-haspopup="dialog" aria-controls="emailModal">
-                        <i class="fas fa-envelope"></i>
-                        <div class="contact-text">
-                            <span class="contact-label">Email</span>
-                            <span class="contact-value">giaa32087@gmail.com</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
-        // Modal functions (giữ nguyên block cũ)
-        function openZaloModal(event) {
-            event.preventDefault();
-            document.getElementById('zaloModal').style.display = 'block';
+        // JAVASCRIPT: Logic Game
+
+        // 1. Logic Bộ đếm ngược (Giả lập 11 ngày như ảnh)
+        const targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + 11); // Thêm 11 ngày
+        targetDate.setHours(targetDate.getHours() + 13);
+        targetDate.setMinutes(targetDate.getMinutes() + 17);
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = 
+                `${days} ngày : ${hours} giờ : ${minutes} phút : ${seconds} giây`;
+        }
+        setInterval(updateTimer, 1000);
+
+        // 2. Danh sách các Icon (Dùng Emoji thay cho ảnh)
+        const iconsLibrary = [
+            '🪄', '⚓', '☸️', '🛳️', '🎵', '🍷', '🔍', '🧭', '⛵', '⭐', '💎', '🎁'
+        ];
+
+        let flippedCards = [];
+        let matchedCards = [];
+
+        // 3. Hàm tạo game
+        function createGame() {
+            const rows = parseInt(document.getElementById('rows').value);
+            const cols = parseInt(document.getElementById('cols').value);
+            const board = document.getElementById('gameBoard');
+            
+            // Reset game
+            board.innerHTML = '';
+            board.style.gridTemplateColumns = `repeat(${cols}, 70px)`;
+            flippedCards = [];
+            matchedCards = [];
+
+            const totalCards = rows * cols;
+            // Cần số cặp icon bằng một nửa tổng số thẻ
+            const pairsCount = Math.floor(totalCards / 2); 
+            
+            let gameIcons = [];
+            // Lấy icon từ thư viện và nhân đôi để tạo cặp
+            for (let i = 0; i < pairsCount; i++) {
+                const icon = iconsLibrary[i % iconsLibrary.length];
+                gameIcons.push(icon);
+                gameIcons.push(icon);
+            }
+
+            // Nếu số lượng thẻ lẻ, thêm 1 thẻ rỗng hoặc thẻ Joker (xử lý đơn giản: bỏ qua)
+            if (totalCards % 2 !== 0) {
+                gameIcons.push('❓');
+            }
+
+            // Trộn ngẫu nhiên (Shuffle)
+            gameIcons.sort(() => 0.5 - Math.random());
+
+            // Tạo HTML cho từng thẻ
+            gameIcons.forEach((icon, index) => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.dataset.index = index;
+                card.dataset.icon = icon;
+
+                card.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-front"></div>
+                        <div class="card-back">
+                            <span>${icon}</span>
+                        </div>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => flipCard(card));
+                board.appendChild(card);
+            });
         }
 
-        function closeModal() {
-            document.getElementById('zaloModal').style.display = 'none';
-        }
+        // 4. Logic lật thẻ
+        function flipCard(card) {
+            // Chặn lật nếu đã lật 2 lá, hoặc lật lại lá vừa lật, hoặc lá đã hoàn thành
+            if (flippedCards.length >= 2 || card.classList.contains('flipped') || matchedCards.includes(card)) {
+                return;
+            }
 
-        // Close modal when clicking outside (giữ nguyên cho Zalo modal)
-        window.onclick = function(event) {
-            const modal = document.getElementById('zaloModal');
-            if (event.target === modal) {
-                modal.style.display = 'none';
+            card.classList.add('flipped');
+            flippedCards.push(card);
+
+            if (flippedCards.length === 2) {
+                checkMatch();
             }
         }
 
-        // Click to copy email (GIỮ NGUYÊN để bảo toàn code gốc - sẽ được override bằng listener capture phía dưới)
-        document.querySelector('.email-item').addEventListener('click', function() {
-            const email = 'nguyenhoanganh2972004@gmail.com';
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(email).then(() => {
-                    showNotification('Đã sao chép email!');
-                });
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            
+            if (card1.dataset.icon === card2.dataset.icon) {
+                // Khớp
+                matchedCards.push(card1, card2);
+                flippedCards = [];
+                // Kiểm tra chiến thắng (tùy chọn)
             } else {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = email;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                showNotification('Đã sao chép email!');
-            }
-        });
-
-      // Show notification (SỬA LỖI cú pháp cho chạy ổn)
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: linear-gradient(135deg, #4ecdc4, #44a08d);
-                color: white;
-                padding: 12px 20px;
-                border-radius: 12px;
-                font-weight: 600;
-                z-index: 10001;
-                box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-                animation: slideInRight 0.3s ease;
-                font-family: 'Inter', sans-serif;
-                font-size: 0.9rem;
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255,255,255,0.2);
-            `;
-            
-            // Add slide animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideInRight {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to   { transform: translateX(0);     opacity: 1; }
-                }
-                @keyframes slideOutRight {
-                    from { transform: translateX(0);     opacity: 1; }
-                    to   { transform: translateX(100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            // Auto remove after 3 seconds
-            setTimeout(() => {
-                notification.style.animation = 'slideOutRight 0.3s ease';
+                // Không khớp - úp lại sau 1 giây
                 setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                    document.head.removeChild(style);
-                }, 300);
-            }, 3000);
-        }
-
-        // Optimized particle system
-        function createParticles() {
-            const particleContainer = document.getElementById('particles');
-            const particleCount = window.innerWidth < 768 ? 8 : 15; // Fewer particles on mobile
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 8 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 6) + 's';
-                particleContainer.appendChild(particle);
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    flippedCards = [];
+                }, 1000);
             }
         }
 
-        // Performance monitoring
-        let performanceMode = 'normal';
-        
-        function checkPerformance() {
-            const startTime = performance.now();
-            requestAnimationFrame(() => {
-                const endTime = performance.now();
-                const frameTime = endTime - startTime;
-                
-                if (frameTime > 16.67) { // If frame time > 60fps threshold
-                    performanceMode = 'reduced';
-                    // Reduce animations for better performance
-                    document.body.style.setProperty('--animation-speed', '0.5s');
-                } else {
-                    performanceMode = 'normal';
-                }
-            });
-        }
-
-        // Loading screen handler
-        function hideLoading() {
-            const loadingScreen = document.getElementById('loading');
-            loadingScreen.classList.add('fade-out');
-            
-            setTimeout(() => {
-                loadingScreen.style.display = 'none';
-            }, 400);
-        }
-
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check performance
-            checkPerformance();
-            
-            // Create particles
-            createParticles();
-            
-            // Hide loading screen after content loads
-            setTimeout(hideLoading, 1500);
-            
-            // Add smooth scrolling for any internal links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-            
-            // Add intersection observer for animations
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-            
-            // Observe profile card for entrance animation
-            const profileCard = document.querySelector('.profile-card');
-            if (profileCard) {
-                observer.observe(profileCard);
-            }
-
-            /* =========================
-               NEW: Confirm before open
-               ========================= */
-            const confirmModal = document.getElementById('confirmModal');
-            const confirmMsg = document.getElementById('confirmMessage');
-            const btnYes = document.getElementById('confirmYes');
-            const btnNo = document.getElementById('confirmNo');
-            let _confirmResolve = null;
-
-            function openConfirm(message) {
-                confirmMsg.textContent = message;
-                confirmModal.style.display = 'block';
-                return new Promise((resolve) => {
-                    _confirmResolve = resolve;
-                    // focus first button
-                    setTimeout(() => btnYes.focus(), 50);
-                });
-            }
-            function closeConfirm() {
-                confirmModal.style.display = 'none';
-                _confirmResolve = null;
-            }
-            btnYes.addEventListener('click', () => { if (_confirmResolve) _confirmResolve(true); closeConfirm(); });
-            btnNo.addEventListener('click', () => { if (_confirmResolve) _confirmResolve(false); closeConfirm(); });
-
-            // Close confirm when clicking outside
-            confirmModal.addEventListener('click', (e) => {
-                if (e.target === confirmModal) {
-                    if (_confirmResolve) _confirmResolve(false);
-                    closeConfirm();
-                }
-            });
-
-            // Attach to all social links
-            document.querySelectorAll('.social-link').forEach(link => {
-                link.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    const label = link.dataset.label || link.textContent.trim();
-                    const message = `Sau khi ấn vào đây sẽ mở ra ${label} của Hoàng Anh, bạn chắc chứ?`;
-                    const ok = await openConfirm(message);
-                    if (ok) {
-                        // mở theo target của link
-                        const target = link.getAttribute('target') || '_self';
-                        window.open(link.href, target);
-                        showNotification(`Đang mở ${label}...`);
-                    }
-                });
-            });
-
-            /* =========================
-               NEW: Email option modal
-               ========================= */
-            const emailModal = document.getElementById('emailModal');
-            const btnCopyEmail = document.getElementById('btnCopyEmail');
-            const btnOpenGmail = document.getElementById('btnOpenGmail');
-            const btnCloseEmail = document.getElementById('btnCloseEmail');
-            const emailStr = 'nguyenhoanganh2972004@gmail.com';
-
-            function openEmailModal() {
-                emailModal.style.display = 'block';
-                setTimeout(() => btnCopyEmail.focus(), 50);
-            }
-            function closeEmailModal() {
-                emailModal.style.display = 'none';
-            }
-
-            // OVERRIDE hành vi click email gốc bằng capture (chặn listener cũ)
-            const emailItem = document.querySelector('.email-item');
-            if (emailItem) {
-                emailItem.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-                    openEmailModal();
-                }, true); // capture phase để chạy trước listener gốc
-            }
-
-            // Email buttons
-            btnCopyEmail.addEventListener('click', async () => {
-                try {
-                    if (navigator.clipboard) {
-                        await navigator.clipboard.writeText(emailStr);
-                    } else {
-                        const textArea = document.createElement('textarea');
-                        textArea.value = emailStr;
-                        document.body.appendChild(textArea);
-                        textArea.select();
-                        document.execCommand('copy');
-                        document.body.removeChild(textArea);
-                    }
-                    closeEmailModal();
-                    showNotification('Đã sao chép email!');
-                } catch (err) {
-                    closeEmailModal();
-                    showNotification('Không sao chép được, thử lại sau.');
-                }
-            });
-
-            btnOpenGmail.addEventListener('click', async () => {
-                const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailStr)}`;
-                const ok = await openConfirm('Sau khi ấn vào đây sẽ mở Gmail để soạn thư cho Hoàng Anh, bạn chắc chứ?');
-                if (ok) {
-                    window.open(gmailUrl, '_blank');
-                    showNotification('Đang mở Gmail...');
-                }
-                closeEmailModal();
-            });
-
-            btnCloseEmail.addEventListener('click', closeEmailModal);
-
-            // Close email modal when clicking outside
-            emailModal.addEventListener('click', (e) => {
-                if (e.target === emailModal) {
-                    closeEmailModal();
-                }
-            });
-
-            // Keyboard accessibility
-            document.addEventListener('keydown', function(e) {
-                // Close modal with Escape key
-                if (e.key === 'Escape') {
-                    const modalZalo = document.getElementById('zaloModal');
-                    if (modalZalo && modalZalo.style.display === 'block') closeModal();
-                    if (confirmModal && confirmModal.style.display === 'block') { if (_confirmResolve) _confirmResolve(false); closeConfirm(); }
-                    if (emailModal && emailModal.style.display === 'block') closeEmailModal();
-                }
-                
-                // Handle Enter key for contact items
-                if (e.key === 'Enter' && e.target.classList.contains('contact-item')) {
-                    e.target.click();
-                }
-            });
-        });
-
-        // Handle window resize for responsive particles
-        window.addEventListener('resize', function() {
-            // Debounce resize events
-            clearTimeout(window.resizeTimeout);
-            window.resizeTimeout = setTimeout(() => {
-                // Recreate particles with new count
-                const particleContainer = document.getElementById('particles');
-                particleContainer.innerHTML = '';
-                createParticles();
-                
-                // Recheck performance
-                checkPerformance();
-            }, 250);
-        });
-
-        // Keyboard accessibility (giữ nguyên + mở rộng phía trên)
-        document.addEventListener('keydown', function(e) {
-            // Close modal with Escape key
-            if (e.key === 'Escape') {
-                const modal = document.getElementById('zaloModal');
-                if (modal.style.display === 'block') {
-                    closeModal();
-                }
-            }
-            
-            // Handle Enter key for contact items
-            if (e.key === 'Enter' && e.target.classList.contains('contact-item')) {
-                e.target.click();
-            }
-        });
-
-        // Add focus management for modals
-        function trapFocus(element) {
-            const focusableElements = element.querySelectorAll(
-                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-            );
-            const firstElement = focusableElements[0];
-            const lastElement = focusableElements[focusableElements.length - 1];
-
-            element.addEventListener('keydown', (e) => {
-                if (e.key === 'Tab') {
-                    if (e.shiftKey) {
-                        if (document.activeElement === firstElement) {
-                            lastElement.focus();
-                            e.preventDefault();
-                        }
-                    } else {
-                        if (document.activeElement === lastElement) {
-                            firstElement.focus();
-                            e.preventDefault();
-                        }
-                    }
-                }
-            });
-
-            firstElement.focus();
-        }
-
-        // Enhanced modal functions (giữ nguyên cho Zalo modal)
-        function openZaloModal(event) {
-            event.preventDefault();
-            const modal = document.getElementById('zaloModal');
-            modal.style.display = 'block';
-            
-            // Trap focus in modal
-            setTimeout(() => {
-                trapFocus(modal);
-            }, 100);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('zaloModal');
-            modal.style.display = 'none';
-            
-            // Return focus to the trigger element
-            const zaloLink = document.querySelector('.zalo');
-            if (zaloLink) {
-                zaloLink.focus();
-            }
-        }
-
-        // Error handling for images and external resources
-        window.addEventListener('error', function(e) {
-            if (e.target.tagName === 'IMG') {
-                // Handle image loading errors
-                e.target.style.display = 'none';
-            }
-        });
-
-        // Preload critical resources
-        function preloadResources() {
-            const resources = [
-                'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap',
-                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
-            ];
-            
-            resources.forEach(href => {
-                const link = document.createElement('link');
-                link.rel = 'preload';
-                link.as = 'style';
-                link.href = href;
-                document.head.appendChild(link);
-            });
-        }
-
-        // Call preload on script load
-        preloadResources();
-
-        // Service Worker registration (optional for PWA)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                // Only register if service worker file exists
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch(registrationError => {
-                        // Silently fail if no service worker
-                        console.log('SW registration failed: ', registrationError);
-                    });
-            });
-        }
+        // Khởi tạo game lần đầu
+        createGame();
     </script>
 </body>
 </html>
-
-
-
-
-
-
