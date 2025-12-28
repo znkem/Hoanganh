@@ -28,7 +28,7 @@
             padding: 30px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             border: 1px solid rgba(255, 255, 255, 0.18);
-            width: 100%; /* Đảm bảo container không bị cứng */
+            width: 100%;
         }
         
         h1 {
@@ -143,21 +143,20 @@
             pointer-events: none;
         }
         
-        /* --- PHẦN GRID TỐI ƯU --- */
         #grid {
             display: grid;
-            gap: 8px; /* Khoảng cách giữa các ô */
+            gap: 8px;
             justify-content: center;
             margin: 25px auto;
             width: 100%;
         }
         
         .cell {
-            width: 100%; /* Chiếm hết chiều rộng ô lưới cho phép */
-            aspect-ratio: 3/4; /* Giữ tỷ lệ khung hình chữ nhật lá bài */
+            width: 100%;
+            aspect-ratio: 3/4;
             background: rgba(0, 0, 0, 0.4);
             border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px; /* Bo góc nhỏ hơn chút để đỡ bị thô khi ô nhỏ */
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
@@ -276,11 +275,11 @@
         /* RESPONSIVE CHO MOBILE */
         @media (max-width: 600px) {
             body {
-                padding: 5px; /* Giảm padding body */
+                padding: 5px;
             }
             
             .container {
-                padding: 15px 10px; /* Giảm padding container */
+                padding: 15px 10px;
                 max-width: 100%;
             }
             
@@ -288,13 +287,12 @@
                 font-size: 1.5em;
             }
             
-            /* Tối ưu Grid cho màn hình nhỏ */
             #grid {
-                gap: 4px; /* Giảm khoảng cách giữa các ô */
+                gap: 4px;
             }
             
             .cell {
-                border-width: 1px; /* Viền mỏng hơn */
+                border-width: 1px;
                 border-radius: 6px;
             }
             
@@ -409,7 +407,8 @@
             6: "https://lh3.googleusercontent.com/d/1qTi-9QIB0k-7M7mq8-7ZKLKW_AQRtV4r",
             7: "https://lh3.googleusercontent.com/d/11PqBIVFCEBGy_vhJeebo1eda9mgQryZU",
             8: "https://lh3.googleusercontent.com/d/1qckrKrlMhI-0eOTSojdvD1CyVckysN_W",
-            9: "https://lh3.googleusercontent.com/d/1qUnj0DlVWJT0MWVScfKFWYTV0xFw3KRm"
+            9: "https://lh3.googleusercontent.com/d/1qUnj0DlVWJT0MWVScfKFWYTV0xFw3KRm",
+            10: "https://cdn-icons-png.flaticon.com/512/845/845646.png" // Icon "Đã xong" mới thêm
         };
 
         const iconsDiv = document.getElementById("icons");
@@ -422,7 +421,8 @@
         let firstSelectedCell = null;
 
         // Create icon selector
-        for (let i = 1; i <= 9; i++) {
+        // Đã sửa thành i <= 10 để hiển thị thêm icon mới
+        for (let i = 1; i <= 10; i++) {
             const iconEl = document.createElement("div");
             iconEl.className = "icon";
             iconEl.innerHTML = `<img src="${ICONS[i]}" alt="Icon ${i}">`;
@@ -445,7 +445,6 @@
             const rows = parseInt(rowsInput.value);
             const cols = parseInt(colsInput.value);
             
-            // --- THAY ĐỔI QUAN TRỌNG: Sử dụng 'fr' thay vì 'px' cứng ---
             grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
             
             const totalCells = rows * cols;
