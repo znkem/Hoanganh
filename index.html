@@ -191,7 +191,6 @@ header {
 .selector-title { font-size: .78rem; font-weight: 700; color: rgba(255,255,255,.7); text-transform: uppercase; letter-spacing: .4px; }
 .selector-hint { font-size: .68rem; color: rgba(255,255,255,.4); }
 
-/* Updated for wrapping */
 .card-types-row {
   display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 4px; justify-content: flex-start;
 }
@@ -228,6 +227,11 @@ header {
 .ct-chip.erase-chip { border-color: rgba(255,100,100,.3); }
 .ct-chip.erase-chip:hover { background: rgba(255,80,80,.12); }
 .ct-chip.erase-chip.active { border-color: #ff5555; background: rgba(255,50,50,.2); box-shadow: 0 0 12px rgba(255,80,80,.35); }
+
+/* MARK chip */
+.ct-chip.mark-chip { border-color: rgba(76,175,80,.3); }
+.ct-chip.mark-chip:hover { background: rgba(76,175,80,.12); }
+.ct-chip.mark-chip.active { border-color: #4caf50; background: rgba(76,175,80,.2); box-shadow: 0 0 12px rgba(76,175,80,.35); }
 
 /* ========= BOARD SECTION ========= */
 .board-section {
@@ -461,8 +465,8 @@ footer {
 <div class="selector-panel">
   <div class="selector-card">
     <div class="selector-header">
-      <div class="selector-title">🎴 Chọn loại thẻ để đặt</div>
-      <div class="selector-hint">Chọn thẻ → click vào ô</div>
+      <div class="selector-title">🎴 Chọn công cụ hoặc thẻ</div>
+      <div class="selector-hint">Bấm để chọn → click vào ô</div>
     </div>
     <div class="card-types-row" id="ctChips"></div>
   </div>
@@ -659,15 +663,6 @@ const CARDS = [
       <circle cx="15" cy="20" r="3" fill="#fff" opacity="0.8"/>
       <circle cx="85" cy="30" r="2" fill="#fff" opacity="0.6"/>
     </svg>`
-  },
-  {
-    id: 'done', name: 'Đã Xong', rarity: 'normal',
-    bg: '#78909c', border: '#546e7a',
-    svg: `<svg viewBox="0 0 100 100" style="background:#cfd8dc; border-radius:12px; border:2px solid #fff;">
-      <circle cx="50" cy="40" r="25" fill="#4caf50"/>
-      <polyline points="38,42 46,50 64,30" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-      <text x="50" y="80" font-size="16" font-weight="900" fill="#37474f" text-anchor="middle">ĐÃ XONG</text>
-    </svg>`
   }
 ];
 
@@ -676,7 +671,7 @@ const CARDS = [
    =================================================== */
 let rows = 2, cols = 4;
 let board = []; // [{type: id|null, done: bool}]
-let activeTool = null; // card id or 'erase' or null
+let activeTool = null; // card id or 'erase' or 'mark' or null
 let ctxIdx = null;
 let pendingRows = null, pendingCols = null;
 
@@ -697,6 +692,7 @@ function initSelects() {
    =================================================== */
 function initChips() {
   const row = document.getElementById('ctChips');
+  
   // Erase chip
   const eraseChip = document.createElement('div');
   eraseChip.className = 'ct-chip erase-chip';
@@ -711,6 +707,25 @@ function initChips() {
   eraseChip.onclick = () => setTool('erase');
   row.appendChild(eraseChip);
 
+  // Mark (Done/Blur) chip
+  const markChip = document.createElement('div');
+  markChip.className = 'ct-chip mark-chip';
+  markChip.dataset.id = 'mark';
+  markChip.innerHTML = `
+    <div class="ct-icon">
+      <svg viewBox="0 0 100 100" style="background:#cfd8dc; border-radius:8px; border:2px solid transparent; width:100%; height:100%;">
+        <circle cx="50" cy="40" r="25" fill="#4caf50"/>
+        <polyline points="38,42 46,50 64,30" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="50" y="80" font-size="16" font-weight="900" fill="#37474f" text-anchor="middle">ĐÃ XONG</text>
+      </svg>
+    </div>
+    <div class="ct-name">Làm mờ</div>
+    <div class="ct-badge">✓</div>
+  `;
+  markChip.onclick = () => setTool('mark');
+  row.appendChild(markChip);
+
+  // Card chips
   CARDS.forEach(ct => {
     const chip = document.createElement('div');
     chip.className = 'ct-chip';
@@ -738,6 +753,8 @@ function setTool(id) {
   });
   if (id === 'erase') {
     toast('🗑️ Chọn ô để xóa thẻ');
+  } else if (id === 'mark') {
+    toast('✅ Chọn ô để đánh dấu làm mờ');
   } else {
     const ct = CARDS.find(c => c.id === id);
     toast(`🃏 Đặt "${ct.name}" – bấm vào ô`);
@@ -823,6 +840,8 @@ function renderBoard() {
       if (activeTool) {
         if (activeTool === 'erase') {
           applyErase(idx);
+        } else if (activeTool === 'mark') {
+          toggleDone(idx);
         } else {
           applyCard(idx, activeTool);
         }
