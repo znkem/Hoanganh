@@ -191,11 +191,10 @@ header {
 .selector-title { font-size: .78rem; font-weight: 700; color: rgba(255,255,255,.7); text-transform: uppercase; letter-spacing: .4px; }
 .selector-hint { font-size: .68rem; color: rgba(255,255,255,.4); }
 
+/* Updated for wrapping */
 .card-types-row {
-  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
-  scrollbar-width: none;
+  display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 4px; justify-content: flex-start;
 }
-.card-types-row::-webkit-scrollbar { display: none; }
 
 .ct-chip {
   flex-shrink: 0;
