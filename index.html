@@ -2,858 +2,1020 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎮 Play Together 29Ju</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>JuAnh – Đài Khí Tượng</title>
 <style>
-  /* ====== RESET & BASE ====== */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ========= RESET ========= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-tap-highlight-color: transparent; }
 
-  :root {
-    --bg-main: #0f172a;
-    --bg-grad: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    --panel-bg: rgba(30, 41, 59, 0.75);
-    --panel-border: rgba(255, 255, 255, 0.08);
-    --card-bg: #1e293b;
-    --card-border: #334155;
-    --card-hover: #2dd4bf;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --primary: #3b82f6;
-    --primary-hover: #2563eb;
-    --danger: #ef4444;
-    --success: #10b981;
-    --radius: 16px;
-    --font: 'Inter', 'Segoe UI', system-ui, sans-serif;
-  }
+/* ========= TOKENS ========= */
+:root {
+  --orange: #ff9929;
+  --orange-dark: #e07a10;
+  --orange-light: #ffb55a;
+  --sky: #5ec8f5;
+  --sky-dark: #3aaddf;
+  --sky-deep: #1a7aaf;
+  --card-face: #7dd8f8;
+  --card-face2: #5abde8;
+  --card-border: #3aa8d8;
+  --card-shadow: #1a80b0;
+  --card-done-bg: rgba(30,60,100,0.38);
+  --purple-bg: #9b59d0;
+  --purple-border: #7040b0;
+  --bg1: #2b8fcf;
+  --bg2: #1a6aaf;
+  --panel: rgba(255,255,255,0.10);
+  --panel-border: rgba(255,255,255,0.18);
+  --text: #fff;
+  --text-dim: rgba(255,255,255,0.65);
+  --radius-card: 14px;
+  --radius-btn: 10px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
 
-  body {
-    font-family: var(--font);
-    min-height: 100vh;
-    background: var(--bg-grad);
-    color: var(--text-main);
-    background-attachment: fixed;
-    overflow-x: hidden;
-    padding-bottom: 40px;
-  }
+body {
+  font-family: var(--font);
+  min-height: 100dvh;
+  background: linear-gradient(170deg, #3db0e8 0%, #1a6aaf 55%, #0d4a8a 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  overflow-x: hidden;
+}
 
-  /* ====== TOP BAR ====== */
-  .topbar {
-    position: sticky; top: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 24px;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--panel-border);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-    flex-wrap: wrap;
-    gap: 12px;
-  }
+/* cloud bg */
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(ellipse 140px 60px at 8% 12%, rgba(255,255,255,.15) 0%, transparent 70%),
+    radial-gradient(ellipse 100px 45px at 30% 6%, rgba(255,255,255,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 180px 70px at 65% 15%, rgba(255,255,255,.13) 0%, transparent 70%),
+    radial-gradient(ellipse 120px 50px at 88% 8%, rgba(255,255,255,.10) 0%, transparent 70%),
+    radial-gradient(ellipse 90px 40px at 50% 80%, rgba(255,255,255,.07) 0%, transparent 70%);
+}
 
-  .topbar-title {
-    font-size: 1.25rem; font-weight: 800;
-    display: flex; align-items: center; gap: 10px;
-    letter-spacing: 0.5px;
-    background: linear-gradient(to right, #38bdf8, #818cf8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+/* ========= HEADER ========= */
+header {
+  position: sticky; top: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(0,60,120,0.78);
+  backdrop-filter: blur(14px);
+  border-bottom: 1.5px solid rgba(100,200,255,0.22);
+  box-shadow: 0 2px 16px rgba(0,0,0,.2);
+}
 
-  .topbar-title .logo {
-    width: 32px; height: 32px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem;
-  }
+.header-left { display: flex; align-items: center; gap: 10px; }
+.logo-wrap {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--orange-light), var(--orange-dark));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; box-shadow: 0 2px 8px rgba(0,0,0,.3); flex-shrink: 0;
+}
+.site-name {
+  font-size: 1.05rem; font-weight: 800; letter-spacing: .5px;
+  color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,.3);
+}
+.site-sub { font-size: .68rem; color: rgba(255,255,255,.5); font-weight: 500; }
 
-  /* ====== CONTROLS PANEL ====== */
-  .controls {
-    position: relative; z-index: 1;
-    background: var(--panel-bg);
-    border: 1px solid var(--panel-border);
-    border-radius: var(--radius);
-    margin: 24px auto 0;
-    padding: 20px 24px;
-    max-width: 860px;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  }
+.header-right { display: flex; align-items: center; gap: 8px; }
+.lang-btn {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+  border-radius: 7px; color: #fff; font-size: .75rem; font-weight: 700;
+  padding: 5px 10px; cursor: pointer; transition: background .15s;
+}
+.lang-btn:hover { background: rgba(255,255,255,.2); }
 
-  .controls-row {
-    display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;
-  }
+/* ========= EVENT BANNER ========= */
+.event-banner {
+  position: relative; z-index: 1;
+  max-width: 820px; margin: 18px auto 0; padding: 0 14px;
+  display: flex; align-items: center; gap: 14px;
+  flex-wrap: wrap;
+}
+.event-badge {
+  background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+  border-radius: 12px; padding: 3px 12px;
+  font-size: .7rem; font-weight: 800; letter-spacing: .5px;
+  text-transform: uppercase; color: #fff;
+  box-shadow: 0 2px 8px rgba(255,153,41,.45);
+  white-space: nowrap;
+}
+.event-title {
+  font-size: 1.5rem; font-weight: 900;
+  color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
 
-  .ctrl-group {
-    display: flex; flex-direction: column; gap: 8px;
-  }
-  .ctrl-group label {
-    font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
-    text-transform: uppercase; letter-spacing: 0.5px;
-  }
-  .ctrl-group select, .ctrl-group input[type=number] {
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    color: var(--text-main);
-    font-size: 0.95rem; font-weight: 500;
-    padding: 10px 14px;
-    outline: none;
-    min-width: 100px;
-    transition: all 0.2s ease;
-    -webkit-appearance: none;
-    appearance: none;
-    cursor: pointer;
-  }
-  .ctrl-group select option { background: var(--bg-main); color: var(--text-main); }
-  .ctrl-group select:focus, .ctrl-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
+/* ========= SETUP PANEL ========= */
+.setup-panel {
+  position: relative; z-index: 1;
+  max-width: 820px; margin: 14px auto 0; padding: 0 14px;
+}
+.setup-card {
+  background: rgba(0,40,100,.55);
+  border: 1.5px solid rgba(100,200,255,.2);
+  border-radius: 18px; padding: 16px 18px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px rgba(0,0,0,.18);
+}
+.setup-row {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;
+}
+.setup-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 110px; }
+.setup-label {
+  font-size: .68rem; font-weight: 700; color: rgba(255,255,255,.6);
+  text-transform: uppercase; letter-spacing: .4px;
+}
+.setup-select {
+  appearance: none; -webkit-appearance: none;
+  background: rgba(255,255,255,.12);
+  border: 1.5px solid rgba(255,255,255,.22);
+  border-radius: 10px; color: #fff; font-size: .9rem; font-weight: 700;
+  padding: 9px 34px 9px 13px; outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,.6)' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 11px center;
+  cursor: pointer; transition: border-color .15s;
+  width: 100%;
+}
+.setup-select option { background: #1a4a80; }
+.setup-select:focus { border-color: var(--orange); }
 
-  .btn {
-    padding: 10px 20px;
-    border-radius: 10px;
-    border: none; cursor: pointer;
-    font-size: 0.9rem; font-weight: 600;
-    transition: all 0.2s ease;
-    display: inline-flex; align-items: center; gap: 8px;
-    white-space: nowrap;
-  }
-  .btn:active { transform: scale(0.96); }
-  .btn-primary { background: var(--primary); color: white; }
-  .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
-  .btn-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
-  .btn-danger:hover { background: var(--danger); color: white; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
-  .btn-secondary { background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid var(--panel-border); }
-  .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
+.btn-create {
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--orange-light), var(--orange-dark));
+  border: none; border-radius: 11px;
+  color: #fff; font-size: .92rem; font-weight: 800;
+  padding: 10px 24px; cursor: pointer;
+  box-shadow: 0 3px 12px rgba(255,153,41,.5);
+  transition: filter .15s, transform .12s, box-shadow .15s;
+  white-space: nowrap; align-self: flex-end;
+  letter-spacing: .2px;
+}
+.btn-create:hover { filter: brightness(1.08); box-shadow: 0 5px 18px rgba(255,153,41,.65); }
+.btn-create:active { transform: scale(.96); }
 
-  /* ====== CARD PICKER ====== */
-  .card-picker {
-    position: relative; z-index: 1;
-    background: var(--panel-bg);
-    border: 1px solid var(--panel-border);
-    border-radius: var(--radius);
-    margin: 16px auto 0;
-    padding: 16px 24px;
-    max-width: 860px;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-  }
-  .picker-title {
-    font-size: 0.8rem; font-weight: 600; color: var(--text-muted);
-    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .picker-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 8px var(--success); }
+/* ========= STATS ROW ========= */
+.stats-row {
+  position: relative; z-index: 1;
+  max-width: 820px; margin: 12px auto 0; padding: 0 14px;
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.stat-chip {
+  background: rgba(0,40,100,.5);
+  border: 1.5px solid rgba(100,200,255,.18);
+  border-radius: 12px; padding: 8px 16px;
+  display: flex; flex-direction: column; gap: 1px;
+  backdrop-filter: blur(10px); flex: 1; min-width: 130px;
+}
+.stat-label { font-size: .65rem; font-weight: 700; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .4px; }
+.stat-value { font-size: 1.3rem; font-weight: 900; color: #fff; line-height: 1; }
+.stat-value span { font-size: .75rem; font-weight: 600; color: rgba(255,255,255,.5); }
 
-  .card-types-grid {
-    display: flex; flex-wrap: wrap; gap: 12px;
-  }
+/* ========= CARD SELECTOR PANEL ========= */
+.selector-panel {
+  position: relative; z-index: 1;
+  max-width: 820px; margin: 12px auto 0; padding: 0 14px;
+}
+.selector-card {
+  background: rgba(0,40,100,.55);
+  border: 1.5px solid rgba(100,200,255,.2);
+  border-radius: 18px; padding: 14px 16px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0,0,0,.15);
+}
+.selector-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
+}
+.selector-title { font-size: .78rem; font-weight: 700; color: rgba(255,255,255,.7); text-transform: uppercase; letter-spacing: .4px; }
+.selector-hint { font-size: .68rem; color: rgba(255,255,255,.4); }
 
-  /* ====== CARD TYPE CHIP ====== */
-  .card-chip {
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    cursor: pointer;
-    border-radius: 12px;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
-    user-select: none;
-    width: 80px;
-    position: relative;
-  }
-  .card-chip:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-2px); }
-  .card-chip.selected {
-    border-color: var(--primary);
-    background: rgba(59, 130, 246, 0.1);
-    box-shadow: 0 0 16px rgba(59, 130, 246, 0.2);
-  }
-  .card-chip .chip-icon { width: 40px; height: 40px; }
-  .card-chip .chip-label {
-    font-size: 0.7rem; font-weight: 500; color: var(--text-muted);
-    text-align: center; line-height: 1.2;
-  }
-  .card-chip.selected .chip-label { color: var(--text-main); font-weight: 600; }
+.card-types-row {
+  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.card-types-row::-webkit-scrollbar { display: none; }
 
-  /* ====== STATUS CHIP ====== */
-  .selected-badge {
-    position: absolute; top: -6px; right: -6px;
-    background: var(--primary); color: white;
-    font-size: 0.65rem; font-weight: 700;
-    border-radius: 50%; width: 20px; height: 20px;
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; transform: scale(0.8);
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-  .card-chip.selected .selected-badge { opacity: 1; transform: scale(1); }
+.ct-chip {
+  flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  cursor: pointer; border-radius: 12px; padding: 8px 8px 6px;
+  border: 2px solid transparent;
+  background: rgba(255,255,255,.08);
+  transition: background .14s, border-color .14s, transform .12s;
+  width: 72px; user-select: none;
+  position: relative;
+}
+.ct-chip:hover { background: rgba(255,255,255,.15); transform: translateY(-2px); }
+.ct-chip.active {
+  border-color: var(--orange);
+  background: rgba(255,153,41,.18);
+  box-shadow: 0 0 12px rgba(255,153,41,.35);
+}
+.ct-chip .ct-icon { width: 44px; height: 44px; flex-shrink: 0; border-radius: 8px; overflow: hidden; }
+.ct-chip .ct-name { font-size: .6rem; font-weight: 700; color: rgba(255,255,255,.8); text-align: center; line-height: 1.15; }
+.ct-chip .ct-badge {
+  position: absolute; top: -5px; right: -5px;
+  background: var(--orange); color: #fff;
+  font-size: .55rem; font-weight: 900;
+  border-radius: 50%; width: 16px; height: 16px;
+  display: none; align-items: center; justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,.3);
+}
+.ct-chip.active .ct-badge { display: flex; }
 
-  /* ====== GAME BOARD ====== */
-  .board-wrapper {
-    position: relative; z-index: 1;
-    max-width: 860px;
-    margin: 24px auto 0;
-    padding: 0 16px;
-  }
+/* ERASE chip */
+.ct-chip.erase-chip { border-color: rgba(255,100,100,.3); }
+.ct-chip.erase-chip:hover { background: rgba(255,80,80,.12); }
+.ct-chip.erase-chip.active { border-color: #ff5555; background: rgba(255,50,50,.2); box-shadow: 0 0 12px rgba(255,80,80,.35); }
 
-  .board-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 16px;
-    flex-wrap: wrap; gap: 12px;
-  }
-  .board-info {
-    font-size: 0.85rem; font-weight: 500; color: var(--text-muted);
-    display: flex; align-items: center; gap: 16px;
-  }
-  .board-info span { display: flex; align-items: center; gap: 6px; }
-  .board-info .badge {
-    background: rgba(255, 255, 255, 0.1); border-radius: 6px;
-    padding: 2px 8px; font-size: 0.85rem; color: var(--text-main);
-    font-family: monospace;
-  }
+/* ========= BOARD SECTION ========= */
+.board-section {
+  position: relative; z-index: 1;
+  max-width: 900px; margin: 16px auto 32px; padding: 0 14px;
+}
 
-  #board {
-    display: grid;
-    gap: clamp(8px, 1.5vw, 16px);
-    width: 100%;
-  }
+.board-actions {
+  display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 10px; flex-wrap: wrap;
+}
+.btn-sm {
+  background: rgba(255,255,255,.1);
+  border: 1.5px solid rgba(255,255,255,.18);
+  border-radius: 9px; color: rgba(255,255,255,.85);
+  font-size: .75rem; font-weight: 700;
+  padding: 7px 14px; cursor: pointer;
+  transition: background .14s;
+}
+.btn-sm:hover { background: rgba(255,255,255,.18); }
+.btn-sm.danger { border-color: rgba(255,80,80,.35); color: #ff9090; }
+.btn-sm.danger:hover { background: rgba(255,60,60,.15); }
 
-  /* ====== CARD ====== */
-  .game-card {
-    position: relative;
-    aspect-ratio: 1;
-    border-radius: var(--radius);
-    border: 1px solid var(--card-border);
-    background: var(--card-bg);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .game-card:hover:not(.done) { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.2); }
-  .game-card:active:not(.done) { transform: scale(0.95); }
+/* EMPTY STATE */
+.board-empty {
+  background: rgba(0,40,100,.4);
+  border: 1.5px dashed rgba(100,200,255,.25);
+  border-radius: 18px; padding: 60px 20px;
+  text-align: center;
+}
+.board-empty .empty-icon { font-size: 3.5rem; margin-bottom: 12px; }
+.board-empty p { color: rgba(255,255,255,.5); font-size: .9rem; font-weight: 600; }
+.board-empty p b { color: var(--orange); }
 
-  /* Default icon */
-  .card-default-icon {
-    width: 40%; height: 40%;
-    opacity: 0.15;
-    fill: var(--text-muted);
-  }
+/* GRID */
+#grid {
+  display: grid;
+  gap: clamp(5px, 1.4vw, 11px);
+}
 
-  /* Card with assigned type */
-  .game-card.has-card {
-    border: none;
-  }
-  .game-card.has-card .card-img-wrap {
-    width: 85%; height: 85%;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .game-card.has-card .card-default-icon { display: none; }
+/* ========= CARD ========= */
+.g-card {
+  position: relative;
+  border-radius: var(--radius-card);
+  border: 2.5px solid var(--card-border);
+  background: linear-gradient(145deg, #9ce8ff, var(--card-face));
+  box-shadow: 0 4px 0 var(--card-shadow), 0 6px 16px rgba(0,0,0,.15);
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, filter .15s;
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+.g-card:hover:not(.is-done) { transform: translateY(-3px); box-shadow: 0 7px 0 var(--card-shadow), 0 10px 22px rgba(0,0,0,.2); }
+.g-card:active:not(.is-done) { transform: scale(.95); box-shadow: 0 2px 0 var(--card-shadow); }
 
-  /* DONE state */
-  .game-card.done {
-    opacity: 0.4;
-    filter: grayscale(0.8);
-    cursor: default;
-    transform: none !important;
-    box-shadow: none !important;
-    border-color: transparent;
-  }
+/* card with content */
+.g-card.has-type { border-color: var(--purple-border); background: linear-gradient(145deg, #c07af0, var(--purple-bg)); }
 
-  /* Done overlay icon */
-  .done-overlay {
-    position: absolute; inset: 0;
-    display: none;
-    align-items: center; justify-content: center;
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(2px);
-    border-radius: var(--radius);
-  }
-  .game-card.done .done-overlay { display: flex; }
-  .done-overlay svg { width: 40%; height: 40%; opacity: 0.8; }
+/* done (mờ) */
+.g-card.is-done {
+  opacity: .35; filter: saturate(.4) brightness(.7);
+  cursor: default; pointer-events: auto;
+  transform: none !important; box-shadow: 0 2px 0 rgba(0,0,0,.3) !important;
+}
+.g-card.is-done:hover { transform: none !important; }
 
-  /* ====== CONTEXT MENU ====== */
-  .ctx-menu {
-    position: fixed; z-index: 999;
-    background: rgba(15, 23, 42, 0.95);
-    border: 1px solid var(--panel-border);
-    border-radius: 12px;
-    padding: 8px;
-    min-width: 220px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    backdrop-filter: blur(20px);
-    display: none;
-    opacity: 0; transform: translateY(10px);
-    transition: opacity 0.2s, transform 0.2s;
-  }
-  .ctx-menu.visible { display: block; opacity: 1; transform: translateY(0); }
-  .ctx-menu-title {
-    font-size: 0.7rem; color: var(--text-muted);
-    font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
-    padding: 4px 10px 8px;
-    border-bottom: 1px solid var(--panel-border);
-    margin-bottom: 6px;
-  }
-  .ctx-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 10px; border-radius: 8px;
-    cursor: pointer; transition: background 0.15s;
-    color: var(--text-main); font-size: 0.85rem; font-weight: 500;
-  }
-  .ctx-item:hover { background: rgba(255, 255, 255, 0.08); }
-  .ctx-item .ctx-icon { width: 28px; height: 28px; flex-shrink: 0; }
-  .ctx-item span { flex: 1; }
-  .ctx-item.danger { color: var(--danger); }
-  .ctx-item.danger:hover { background: rgba(239, 68, 68, 0.15); }
-  .ctx-sep { height: 1px; background: var(--panel-border); margin: 6px; }
+/* card image */
+.g-card .card-svg-wrap { width: 85%; height: 85%; display: flex; align-items: center; justify-content: center; }
+.g-card .card-svg-wrap svg { width: 100%; height: 100%; border-radius: 10px; }
 
-  .ctx-cards-scroll {
-    max-height: 300px; overflow-y: auto;
-    scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent;
-  }
+/* default cloud/sun icon */
+.g-card .default-icon { opacity: .35; width: 56%; height: 56%; }
 
-  /* ====== LEGEND ====== */
-  .legend {
-    position: relative; z-index: 1;
-    max-width: 860px; margin: 20px auto 0;
-    display: flex; flex-wrap: wrap; gap: 12px;
-    padding: 0 16px;
-  }
-  .legend-item {
-    display: flex; align-items: center; gap: 8px;
-    background: rgba(255,255,255,0.03); border: 1px solid var(--panel-border); border-radius: 8px;
-    padding: 6px 12px; font-size: 0.75rem; color: var(--text-muted); font-weight: 500;
-  }
-  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+/* done overlay */
+.done-overlay {
+  position: absolute; inset: 0; display: none;
+  align-items: center; justify-content: center;
+  background: rgba(0,0,0,.35); border-radius: calc(var(--radius-card) - 2px);
+  z-index: 3;
+}
+.g-card.is-done .done-overlay { display: flex; }
+.done-overlay svg { width: 38%; height: 38%; }
 
-  /* ====== EMPTY STATE ====== */
-  .empty-board {
-    text-align: center; padding: 80px 20px;
-    color: var(--text-muted);
-    grid-column: 1 / -1;
-  }
-  .empty-board .big-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
-  .empty-board p { font-size: 1.1rem; font-weight: 500; }
+/* ========= CONTEXT MENU ========= */
+.ctx {
+  position: fixed; z-index: 999;
+  background: rgba(5,25,70,.97);
+  border: 1.5px solid rgba(100,200,255,.25);
+  border-radius: 16px; padding: 8px 6px;
+  min-width: 195px;
+  box-shadow: 0 10px 36px rgba(0,0,0,.5);
+  backdrop-filter: blur(16px);
+  display: none; opacity: 0;
+  transform: scale(.92) translateY(-6px);
+  transition: opacity .15s, transform .15s;
+}
+.ctx.show { display: block; opacity: 1; transform: scale(1) translateY(0); }
+.ctx-head { font-size: .63rem; font-weight: 700; color: rgba(255,255,255,.4); letter-spacing: .4px; text-transform: uppercase; padding: 2px 10px 7px; border-bottom: 1px solid rgba(255,255,255,.08); margin-bottom: 4px; }
+.ctx-scroll { max-height: 260px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.15) transparent; }
+.ctx-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 10px; border-radius: 10px;
+  cursor: pointer; color: #fff; font-size: .8rem; font-weight: 600;
+  transition: background .12s;
+}
+.ctx-item:hover { background: rgba(255,255,255,.1); }
+.ctx-item svg, .ctx-item .ctx-card-icon { width: 30px; height: 30px; flex-shrink: 0; border-radius: 6px; overflow: hidden; }
+.ctx-sep { height: 1px; background: rgba(255,255,255,.08); margin: 4px 6px; }
+.ctx-item.ctx-erase { color: #ff8080; }
+.ctx-item.ctx-erase:hover { background: rgba(255,60,60,.12); }
+.ctx-item.ctx-mark { color: #aaffaa; }
+.ctx-item.ctx-mark:hover { background: rgba(60,255,60,.1); }
 
-  /* ====== TOAST ====== */
-  .toast-wrap {
-    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-    z-index: 9999; pointer-events: none;
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-  }
-  .toast {
-    background: rgba(15, 23, 42, 0.9);
-    border: 1px solid var(--panel-border);
-    border-radius: 12px;
-    color: white; font-size: 0.9rem; font-weight: 500;
-    padding: 12px 24px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    backdrop-filter: blur(10px);
-    animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), toastOut 0.3s ease 2s forwards;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-  @keyframes toastIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes toastOut { to { opacity: 0; transform: translateY(20px); } }
+/* ========= CONFIRM MODAL ========= */
+.modal-bg {
+  position: fixed; inset: 0; z-index: 800;
+  background: rgba(0,0,0,.6); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center; padding: 16px;
+}
+.modal-bg.show { display: flex; }
+.modal-box {
+  background: rgba(5,25,80,.97);
+  border: 1.5px solid rgba(100,200,255,.25);
+  border-radius: 20px; padding: 28px 24px;
+  max-width: 340px; width: 100%;
+  box-shadow: 0 12px 48px rgba(0,0,0,.5);
+  text-align: center;
+}
+.modal-box h3 { font-size: 1rem; font-weight: 800; margin-bottom: 10px; }
+.modal-box p { font-size: .82rem; color: rgba(255,255,255,.65); line-height: 1.55; margin-bottom: 20px; }
+.modal-btns { display: flex; gap: 10px; justify-content: center; }
+.modal-btn {
+  padding: 10px 22px; border-radius: 11px; border: none;
+  font-size: .86rem; font-weight: 800; cursor: pointer;
+  transition: filter .14s, transform .12s;
+}
+.modal-btn:active { transform: scale(.95); }
+.modal-confirm { background: linear-gradient(135deg, #ff6b6b, #d93030); color: #fff; box-shadow: 0 3px 12px rgba(200,30,30,.45); }
+.modal-confirm:hover { filter: brightness(1.1); }
+.modal-cancel { background: rgba(255,255,255,.12); color: #fff; border: 1.5px solid rgba(255,255,255,.2); }
+.modal-cancel:hover { background: rgba(255,255,255,.2); }
 
-  /* ====== RESPONSIVE ====== */
-  @media (max-width: 600px) {
-    .controls-row { flex-direction: column; align-items: stretch; }
-    .btn { justify-content: center; }
-    .card-chip { width: 70px; padding: 8px; }
-  }
+/* ========= TOAST ========= */
+.toast-root {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  z-index: 9000; display: flex; flex-direction: column; align-items: center; gap: 7px;
+  pointer-events: none;
+}
+.toast-msg {
+  background: rgba(5,25,70,.95);
+  border: 1.5px solid rgba(100,200,255,.3);
+  border-radius: 12px; color: #fff;
+  font-size: .8rem; font-weight: 700;
+  padding: 9px 18px;
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+  animation: toastIn .22s ease, toastOut .3s ease 1.9s forwards;
+}
+@keyframes toastIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+@keyframes toastOut { to { opacity:0; transform:translateY(12px); } }
 
-  .svg-card-art { width: 100%; height: 100%; }
+/* ========= FOOTER ========= */
+footer {
+  position: relative; z-index: 1;
+  text-align: center; padding: 20px 16px 30px;
+  font-size: .75rem; color: rgba(255,255,255,.5); line-height: 1.7;
+}
+
+/* ========= RESPONSIVE ========= */
+@media (max-width: 480px) {
+  .event-title { font-size: 1.2rem; }
+  .setup-card { padding: 13px 12px; }
+  .ct-chip { width: 64px; }
+  .ct-chip .ct-icon { width: 38px; height: 38px; }
+}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-title">
-    <div class="logo">🎮</div>
-    Play Together 29Ju
-  </div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-    <button class="btn btn-secondary" onclick="toggleHelp()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      Hướng dẫn
-    </button>
-    <button class="btn btn-danger" onclick="resetAll()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-      Làm mới
-    </button>
-  </div>
-</div>
-
-<div id="helpBox" style="display:none;position:relative;z-index:2;max-width:860px;margin:16px auto 0;padding:0 16px;">
-  <div style="background:var(--panel-bg);border:1px solid var(--panel-border);border-radius:var(--radius);padding:20px;color:var(--text-muted);font-size:0.9rem;line-height:1.6;backdrop-filter:blur(16px);">
-    <b style="color:var(--text-main);font-size:1rem;display:block;margin-bottom:8px;">Cách sử dụng:</b>
-    1️⃣ Chọn số cột & số dòng phù hợp với bảng game thật<br>
-    2️⃣ Nhấn <b style="color:var(--text-main)">Tạo bảng</b> để sinh lưới ô trống<br>
-    3️⃣ <b style="color:var(--text-main)">Nhấp chuột phải</b> (hoặc <b>giữ lâu</b> trên mobile) vào ô để chọn loại thẻ đặt vào<br>
-    4️⃣ Khi đã lật xong 1 ô trong game thật → nhấp trái vào ô đó để <b style="color:var(--text-main)">làm mờ</b> (đánh dấu đã xong)<br>
-    5️⃣ Nhấp lại để <b style="color:var(--text-main)">bỏ mờ</b> nếu cần<br>
-  </div>
-</div>
-
-<div class="controls">
-  <div class="controls-row">
-    <div class="ctrl-group">
-      <label>Số cột</label>
-      <select id="colCount">
-        <option value="3">3 cột</option>
-        <option value="4" selected>4 cột</option>
-        <option value="5">5 cột</option>
-        <option value="6">6 cột</option>
-        <option value="7">7 cột</option>
-        <option value="8">8 cột</option>
-      </select>
-    </div>
-    <div class="ctrl-group">
-      <label>Số dòng</label>
-      <select id="rowCount">
-        <option value="1">1 dòng</option>
-        <option value="2" selected>2 dòng</option>
-        <option value="3">3 dòng</option>
-        <option value="4">4 dòng</option>
-        <option value="5">5 dòng</option>
-        <option value="6">6 dòng</option>
-      </select>
-    </div>
-    <div class="ctrl-group">
-      <label>Cỡ thẻ</label>
-      <select id="cardSize">
-        <option value="auto" selected>Tự động</option>
-        <option value="60">Nhỏ</option>
-        <option value="80">Vừa</option>
-        <option value="100">Lớn</option>
-        <option value="120">Rất lớn</option>
-      </select>
-    </div>
-    <button class="btn btn-primary" onclick="buildBoard()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-      Tạo bảng
-    </button>
-    <button class="btn btn-secondary" onclick="clearAllDone()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-      Bỏ mờ tất cả
-    </button>
-    <button class="btn btn-secondary" onclick="clearAllCards()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      Xóa thẻ
-    </button>
-  </div>
-</div>
-
-<div class="card-picker">
-  <div class="picker-title"><span class="dot"></span> Chọn thẻ để đặt nhanh (Click chọn thẻ → Click vào ô trống)</div>
-  <div class="card-types-grid" id="chipGrid"></div>
-</div>
-
-<div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:var(--card-bg);border:1px solid var(--card-border);"></div> Ô trống</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6;"></div> Đã đặt thẻ</div>
-  <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.2);"></div> Đã lật (mờ)</div>
-  <div class="legend-item" style="border:none;background:transparent;padding-left:0;">💡 Chuột trái = Mờ/Bỏ mờ | Chuột phải = Menu thẻ</div>
-</div>
-
-<div class="board-wrapper">
-  <div class="board-header">
-    <div class="board-info">
-      <span>Tổng: <b class="badge" id="totalCells">0</b></span>
-      <span>Đã đặt: <b class="badge" id="placedCount">0</b></span>
-      <span>Đã lật: <b class="badge" id="doneCount">0</b></span>
+<header>
+  <div class="header-left">
+    <div class="logo-wrap">⛅</div>
+    <div>
+      <div class="site-name">JuAnh</div>
+      <div class="site-sub">Play Together Tools</div>
     </div>
   </div>
-  <div id="board">
-    <div class="empty-board">
-      <div class="big-icon">🎯</div>
-      <p>Nhấn <b>Tạo bảng</b> để bắt đầu cấu hình game!</p>
+  <div class="header-right">
+    <button class="lang-btn" onclick="toggleLang()">🇻🇳 VN</button>
+  </div>
+</header>
+
+<div class="event-banner">
+  <div class="event-badge">⛈️ Sự kiện</div>
+  <div class="event-title">Đài Khí Tượng</div>
+</div>
+
+<div class="setup-panel">
+  <div class="setup-card">
+    <div class="setup-row">
+      <div class="setup-group">
+        <div class="setup-label">Số hàng</div>
+        <select class="setup-select" id="selRows"></select>
+      </div>
+      <div class="setup-group">
+        <div class="setup-label">Số cột</div>
+        <select class="setup-select" id="selCols"></select>
+      </div>
+      <button class="btn-create" onclick="handleCreate()">Tạo Bảng</button>
     </div>
   </div>
 </div>
 
-<div class="ctx-menu" id="ctxMenu">
-  <div class="ctx-menu-title">Chọn thẻ</div>
-  <div class="ctx-cards-scroll" id="ctxCardList"></div>
+<div class="stats-row">
+  <div class="stat-chip">
+    <div class="stat-label">🃏 Thẻ</div>
+    <div class="stat-value" id="statCards">0 <span>ảnh</span></div>
+  </div>
+  <div class="stat-chip">
+    <div class="stat-label">👁️ Ô hiển thị</div>
+    <div class="stat-value" id="statVisible">0 <span>ô</span></div>
+  </div>
+  <div class="stat-chip">
+    <div class="stat-label">✅ Đã lật</div>
+    <div class="stat-value" id="statDone">0 <span>ô</span></div>
+  </div>
+</div>
+
+<div class="selector-panel">
+  <div class="selector-card">
+    <div class="selector-header">
+      <div class="selector-title">🎴 Chọn loại thẻ để đặt</div>
+      <div class="selector-hint">Chọn thẻ → click vào ô</div>
+    </div>
+    <div class="card-types-row" id="ctChips"></div>
+  </div>
+</div>
+
+<div class="board-section">
+  <div class="board-actions" id="boardActions" style="display:none">
+    <button class="btn-sm" onclick="clearDone()">👁️ Bỏ mờ tất cả</button>
+    <button class="btn-sm danger" onclick="clearCards()">🧹 Xóa thẻ</button>
+  </div>
+  <div id="boardWrap">
+    <div class="board-empty">
+      <div class="empty-icon">🌤️</div>
+      <p>Chọn số hàng và số cột<br>rồi bấm <b>Tạo bảng</b></p>
+    </div>
+  </div>
+</div>
+
+<div class="ctx" id="ctxMenu">
+  <div class="ctx-head">Chọn thẻ cho ô này</div>
+  <div class="ctx-scroll" id="ctxList"></div>
   <div class="ctx-sep"></div>
-  <div class="ctx-item danger" onclick="removeCard()">
-    <svg class="ctx-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="padding:4px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-    <span>Xóa thẻ ô này</span>
+  <div class="ctx-item ctx-mark" id="ctxMarkBtn" onclick="ctxToggleDone()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    Đánh dấu đã lật
+  </div>
+  <div class="ctx-item ctx-erase" onclick="ctxErase()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+    Xóa thẻ
   </div>
 </div>
 
-<div class="toast-wrap" id="toastWrap"></div>
+<div class="modal-bg" id="confirmModal">
+  <div class="modal-box">
+    <h3>⚠️ Thay đổi bảng</h3>
+    <p>Thay đổi số lượng cột/hàng có thể khiến các thẻ bạn đánh dấu bị mất.<br>Bạn có chắc chắn không?</p>
+    <div class="modal-btns">
+      <button class="modal-btn modal-confirm" onclick="confirmCreate()">Chắc Chắn</button>
+      <button class="modal-btn modal-cancel" onclick="closeModal()">Không</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-root" id="toastRoot"></div>
+
+<footer>
+  Tính năng được phát triển bởi <b>JuAnh</b> và không chịu trách nhiệm cho bất cứ điều gì.
+</footer>
 
 <script>
-// ===================== CARD TYPES =====================
-const CARD_TYPES = [
+/* ===================================================
+   CARD DEFINITIONS — Khớp với hình ảnh minh họa
+   =================================================== */
+const CARDS = [
   {
-    id: 'empty_sky',
-    label: 'Ô trống',
-    color: '#334155',
-    svg: ``
-  },
-  {
-    id: 'done_card',
-    label: '< Đã xong >',
-    color: '#10b981',
-    glow: 'rgba(16, 185, 129, 0.4)',
-    svg: `<svg class="svg-card-art" viewBox="0 0 100 100">
-      <rect x="10" y="10" width="80" height="80" rx="16" fill="#064e3b"/>
-      <circle cx="50" cy="50" r="24" fill="#059669"/>
-      <polyline points="38,52 46,60 64,42" stroke="#ffffff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    id: 'sun', name: 'Nắng gắt', rarity: 'rare',
+    bg: '#ff7043', border: '#e64a19',
+    svg: `<svg viewBox="0 0 100 100" style="background:#ff8a65; border-radius:12px; border:2px solid #fff;">
+      <polygon points="50,10 56,22 44,22" fill="#ffee58"/>
+      <polygon points="50,90 56,78 44,78" fill="#ffee58"/>
+      <polygon points="10,50 22,56 22,44" fill="#ffee58"/>
+      <polygon points="90,50 78,56 78,44" fill="#ffee58"/>
+      <polygon points="22,22 32,32 26,36" fill="#ffee58"/>
+      <polygon points="78,22 68,32 74,36" fill="#ffee58"/>
+      <polygon points="22,78 32,68 26,64" fill="#ffee58"/>
+      <polygon points="78,78 68,68 74,64" fill="#ffee58"/>
+      <circle cx="50" cy="50" r="24" fill="#ffee58" stroke="#f4511e" stroke-width="2"/>
+      <polygon points="30,42 70,42 62,52 50,46 38,52" fill="#212121" stroke="#424242" stroke-width="1.5"/>
+      <path d="M42 62 Q50 70 58 62" stroke="#e65100" stroke-width="3" fill="none" stroke-linecap="round"/>
     </svg>`
   },
   {
-    id: 'snowman',
-    label: 'Người tuyết',
-    color: '#8b5cf6',
-    glow: 'rgba(139, 92, 246, 0.4)',
-    svg: `<svg class="svg-card-art" viewBox="0 0 100 100">
-      <rect x="10" y="10" width="80" height="80" rx="16" fill="#4c1d95"/>
-      <circle cx="50" cy="68" r="16" fill="white"/>
-      <circle cx="50" cy="44" r="12" fill="white"/>
-      <circle cx="50" cy="26" r="10" fill="white"/>
-      <rect x="40" y="8" width="20" height="12" rx="2" fill="#1e1b4b"/>
-      <rect x="36" y="18" width="28" height="4" rx="2" fill="#1e1b4b"/>
-      <circle cx="46" cy="24" r="1.5" fill="#1e1b4b"/>
-      <circle cx="54" cy="24" r="1.5" fill="#1e1b4b"/>
-      <polygon points="50,26 47,29 54,29" fill="#f97316"/>
-      <path d="M42 40 Q50 44 58 40" stroke="#ef4444" stroke-width="4" fill="none" stroke-linecap="round"/>
+    id: 'lightning', name: 'Sét vàng', rarity: 'rare',
+    bg: '#fbc02d', border: '#f57f17',
+    svg: `<svg viewBox="0 0 100 100" style="background:#ffee58; border-radius:12px; border:2px solid #fff;">
+      <polygon points="58,10 35,55 52,55 40,90 75,45 57,45 72,10" fill="#fff" opacity="0.9"/>
+      <polygon points="56,18 40,52 52,52 44,80 66,46 54,46 66,18" fill="#fdd835"/>
+      <line x1="10" y1="15" x2="25" y2="30" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+      <line x1="90" y1="15" x2="75" y2="30" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
     </svg>`
   },
   {
-    id: 'rain_cloud',
-    label: 'Mây mưa',
-    color: '#3b82f6',
-    glow: 'rgba(59, 130, 246, 0.4)',
-    svg: `<svg class="svg-card-art" viewBox="0 0 100 100">
-      <rect x="10" y="10" width="80" height="80" rx="16" fill="#1e3a8a"/>
-      <ellipse cx="50" cy="45" rx="24" ry="16" fill="#cbd5e1"/>
-      <circle cx="38" cy="45" r="14" fill="#cbd5e1"/>
-      <circle cx="62" cy="45" r="14" fill="#cbd5e1"/>
-      <circle cx="50" cy="35" r="16" fill="#94a3b8"/>
-      <ellipse cx="40" cy="70" rx="2" ry="6" fill="#60a5fa"/>
-      <ellipse cx="50" cy="65" rx="2" ry="6" fill="#60a5fa"/>
-      <ellipse cx="60" cy="70" rx="2" ry="6" fill="#60a5fa"/>
+    id: 'rain', name: 'Mây mưa', rarity: 'normal',
+    bg: '#42a5f5', border: '#1e88e5',
+    svg: `<svg viewBox="0 0 100 100" style="background:#64b5f6; border-radius:12px; border:2px solid #fff;">
+      <ellipse cx="50" cy="45" rx="35" ry="22" fill="#1e88e5"/>
+      <ellipse cx="50" cy="42" rx="35" ry="22" fill="#42a5f5"/>
+      <circle cx="35" cy="42" r="5" fill="#fff"/>
+      <circle cx="65" cy="42" r="5" fill="#fff"/>
+      <rect x="30" y="38" width="10" height="4" fill="#1565c0" rx="2" transform="rotate(15 35 40)"/>
+      <rect x="60" y="38" width="10" height="4" fill="#1565c0" rx="2" transform="rotate(-15 65 40)"/>
+      <circle cx="35" cy="43" r="2.5" fill="#1565c0"/>
+      <circle cx="65" cy="43" r="2.5" fill="#1565c0"/>
+      <line x1="45" y1="50" x2="55" y2="50" stroke="#1565c0" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="35" cy="70" rx="3" ry="8" fill="#bbdefb"/>
+      <ellipse cx="50" cy="75" rx="3" ry="8" fill="#bbdefb"/>
+      <ellipse cx="65" cy="70" rx="3" ry="8" fill="#bbdefb"/>
     </svg>`
   },
   {
-    id: 'clock_plus',
-    label: 'Đồng hồ +1',
-    color: '#ec4899',
-    glow: 'rgba(236, 72, 153, 0.4)',
-    svg: `<svg class="svg-card-art" viewBox="0 0 100 100">
-      <rect x="10" y="10" width="80" height="80" rx="16" fill="#831843"/>
-      <circle cx="50" cy="50" r="26" fill="white"/>
-      <circle cx="50" cy="50" r="22" fill="#f8fafc"/>
-      <line x1="50" y1="50" x2="50" y2="36" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
-      <line x1="50" y1="50" x2="60" y2="50" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/>
-      <circle cx="72" cy="28" r="12" fill="#ef4444"/>
-      <text x="72" y="32" text-anchor="middle" font-size="11" font-weight="bold" fill="white">+1</text>
+    id: 'snowman', name: 'Người tuyết', rarity: 'rare',
+    bg: '#ab47bc', border: '#8e24aa',
+    svg: `<svg viewBox="0 0 100 100" style="background:#ce93d8; border-radius:12px; border:2px solid #fff;">
+      <circle cx="50" cy="70" r="22" fill="#fff" stroke="#ba68c8" stroke-width="2"/>
+      <circle cx="50" cy="42" r="16" fill="#fff" stroke="#ba68c8" stroke-width="2"/>
+      <rect x="36" y="10" width="28" height="20" rx="4" fill="#ab47bc" transform="rotate(10 50 20)"/>
+      <rect x="32" y="26" width="36" height="5" rx="2" fill="#8e24aa" transform="rotate(10 50 20)"/>
+      <circle cx="44" cy="38" r="2.5" fill="#4a148c"/>
+      <circle cx="56" cy="38" r="2.5" fill="#4a148c"/>
+      <polygon points="50,42 45,46 58,45" fill="#ff9800"/>
+      <path d="M43 48 Q50 52 57 48" stroke="#4a148c" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M34 68 Q50 72 66 68" stroke="#ba68c8" stroke-width="4" fill="none"/>
+      <circle cx="50" cy="58" r="2.5" fill="#8e24aa"/>
+      <circle cx="50" cy="68" r="2.5" fill="#8e24aa"/>
+      <circle cx="50" cy="78" r="2.5" fill="#8e24aa"/>
+      <circle cx="20" cy="30" r="4" fill="#fff" opacity="0.8"/>
+      <circle cx="80" cy="60" r="3" fill="#fff" opacity="0.7"/>
+      <circle cx="75" cy="25" r="2" fill="#fff" opacity="0.6"/>
     </svg>`
   },
   {
-    id: 'girl_char',
-    label: 'Cô gái',
-    color: '#f43f5e',
-    glow: 'rgba(244, 63, 94, 0.4)',
-    svg: `<svg class="svg-card-art" viewBox="0 0 100 100">
-      <rect x="10" y="10" width="80" height="80" rx="16" fill="#881337"/>
-      <ellipse cx="50" cy="45" rx="22" ry="26" fill="#fbbf24"/>
-      <circle cx="50" cy="48" r="18" fill="#fde68a"/>
-      <ellipse cx="50" cy="32" rx="18" ry="10" fill="#f59e0b"/>
-      <rect x="36" y="44" width="10" height="8" rx="2" fill="none" stroke="#4c1d95" stroke-width="2"/>
-      <rect x="54" y="44" width="10" height="8" rx="2" fill="none" stroke="#4c1d95" stroke-width="2"/>
-      <line x1="46" y1="48" x2="54" y2="48" stroke="#4c1d95" stroke-width="2"/>
-      <path d="M44 58 Q50 64 56 58" stroke="#ea580c" stroke-width="2" fill="none" stroke-linecap="round"/>
+    id: 'wind', name: 'Gió', rarity: 'normal',
+    bg: '#66bb6a', border: '#43a047',
+    svg: `<svg viewBox="0 0 100 100" style="background:#81c784; border-radius:12px; border:2px solid #fff;">
+      <path d="M 25 35 Q 35 25 50 35 Q 60 30 70 40 Q 85 45 75 65 Q 85 80 65 75 Q 50 85 35 75 Q 15 80 20 55 Q 10 40 25 35 Z" fill="#c8e6c9" opacity="0.8"/>
+      <ellipse cx="35" cy="55" rx="15" ry="25" fill="#a5d6a7"/>
+      <circle cx="30" cy="50" r="2" fill="#2e7d32"/>
+      <circle cx="40" cy="50" r="2" fill="#2e7d32"/>
+      <path d="M28 45 Q30 43 32 45" stroke="#2e7d32" stroke-width="1.5" fill="none"/>
+      <path d="M38 45 Q40 43 42 45" stroke="#2e7d32" stroke-width="1.5" fill="none"/>
+      <path d="M45 60 Q65 60 65 45" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M45 68 Q75 68 75 50 Q75 40 65 40" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M45 76 Q85 76 85 60 Q85 45 70 45" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M15 25 Q25 15 35 25" stroke="#a5d6a7" stroke-width="3" fill="none" stroke-linecap="round"/>
     </svg>`
   },
   {
-    id: 'magnifier',
-    label: 'Kính lúp',
-    color: '#a855f7',
-    glow: 'rgba(168, 85, 247, 0.4)',
-    svg: `<svg class="svg-card-art" viewBox="0 0 100 100">
-      <rect x="10" y="10" width="80" height="80" rx="16" fill="#4a044e"/>
-      <circle cx="44" cy="44" r="22" fill="none" stroke="#d8b4fe" stroke-width="6"/>
-      <circle cx="44" cy="44" r="19" fill="rgba(255,255,255,0.1)"/>
-      <line x1="60" y1="60" x2="76" y2="76" stroke="#fbbf24" stroke-width="8" stroke-linecap="round"/>
-      <line x1="36" y1="36" x2="52" y2="52" stroke="#f43f5e" stroke-width="3" stroke-linecap="round"/>
-      <line x1="52" y1="36" x2="36" y2="52" stroke="#f43f5e" stroke-width="3" stroke-linecap="round"/>
+    id: 'night', name: 'Đêm', rarity: 'normal',
+    bg: '#5c6bc0', border: '#3949ab',
+    svg: `<svg viewBox="0 0 100 100" style="background:#3f51b5; border-radius:12px; border:2px solid #fff;">
+      <path d="M60 20 A 30 30 0 1 0 75 75 A 35 35 0 0 1 60 20 Z" fill="#b3e5fc"/>
+      <polygon points="30,30 35,42 48,42 38,50 42,62 30,54 18,62 22,50 12,42 25,42" fill="#ffee58"/>
+      <line x1="26" y1="48" x2="30" y2="48" stroke="#f57f17" stroke-width="2" stroke-linecap="round"/>
+      <line x1="32" y1="48" x2="36" y2="48" stroke="#f57f17" stroke-width="2" stroke-linecap="round"/>
+      <path d="M28 52 Q30 55 32 52" stroke="#f57f17" stroke-width="1.5" fill="none"/>
+      <circle cx="80" cy="30" r="2" fill="#fff" opacity="0.6"/>
+      <circle cx="20" cy="20" r="1.5" fill="#fff" opacity="0.8"/>
+      <circle cx="85" cy="80" r="2.5" fill="#fff" opacity="0.5"/>
     </svg>`
   },
   {
-    id: 'sun',
-    label: 'Mặt trời đỏ',
-    color: '#f97316',
-    glow: 'rgba(249, 115, 22, 0.4)',
-    svg: `<svg class="svg-card-art" viewBox="0 0 100 100">
-      <rect x="10" y="10" width="80" height="80" rx="16" fill="#7c2d12"/>
-      <circle cx="50" cy="50" r="24" fill="#fbbf24"/>
-      <rect x="36" y="44" width="12" height="8" rx="2" fill="#0f172a"/>
-      <rect x="52" y="44" width="12" height="8" rx="2" fill="#0f172a"/>
-      <line x1="48" y1="48" x2="52" y2="48" stroke="#0f172a" stroke-width="2"/>
-      <path d="M40 60 Q50 68 60 60" stroke="#b45309" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <polygon points="50,14 53,22 47,22" fill="#fbbf24"/>
-      <polygon points="50,86 53,78 47,78" fill="#fbbf24"/>
-      <polygon points="14,50 22,53 22,47" fill="#fbbf24"/>
-      <polygon points="86,50 78,53 78,47" fill="#fbbf24"/>
+    id: 'girl', name: 'Cô gái', rarity: 'special',
+    bg: '#ec407a', border: '#d81b60',
+    svg: `<svg viewBox="0 0 100 100" style="background:linear-gradient(145deg, #f8bbd0, #f06292); border-radius:12px; border:4px solid #fce4ec;">
+      <path d="M30 40 Q50 10 70 40 L75 60 Q50 80 25 60 Z" fill="#fff"/>
+      <path d="M25 45 Q50 15 75 45 Q70 20 50 15 Q30 20 25 45 Z" fill="#f48fb1"/>
+      <ellipse cx="50" cy="55" rx="18" ry="22" fill="#fff"/>
+      <path d="M32 55 C32 45, 68 45, 68 55" fill="none" stroke="#ba68c8" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="42" cy="55" r="5" fill="none" stroke="#ba68c8" stroke-width="3"/>
+      <circle cx="58" cy="55" r="5" fill="none" stroke="#ba68c8" stroke-width="3"/>
+      <line x1="47" y1="55" x2="53" y2="55" stroke="#ba68c8" stroke-width="3"/>
+      <circle cx="42" cy="55" r="2" fill="#4a148c"/>
+      <circle cx="58" cy="55" r="2" fill="#4a148c"/>
+      <path d="M47 68 Q50 72 53 68" stroke="#ec407a" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M25 35 Q10 40 15 60 Q20 70 30 65" fill="none" stroke="#fff" stroke-width="4"/>
+      <path d="M75 35 Q90 40 85 60 Q80 70 70 65" fill="none" stroke="#fff" stroke-width="4"/>
+      <path d="M45 15 Q55 5 70 15 Q75 25 70 35" fill="none" stroke="#fff" stroke-width="4"/>
+      <circle cx="20" cy="20" r="3" fill="#fff" opacity="0.8"/>
     </svg>`
   },
   {
-    id: 'lightning',
-    label: 'Sét vàng',
-    color: '#eab308',
-    glow: 'rgba(234, 179, 8, 0.4)',
-    svg: `<svg class="svg-card-art" viewBox="0 0 100 100">
-      <rect x="10" y="10" width="80" height="80" rx="16" fill="#713f12"/>
-      <polygon points="58,20 40,54 52,54 44,80 66,46 54,46 64,20" fill="#fde047"/>
+    id: 'plus1', name: 'Thời tiết +1', rarity: 'special',
+    bg: '#ab47bc', border: '#8e24aa',
+    svg: `<svg viewBox="0 0 100 100" style="background:linear-gradient(145deg, #f8bbd0, #ce93d8); border-radius:12px; border:4px solid #fce4ec;">
+      <circle cx="50" cy="50" r="32" fill="#fff" opacity="0.9"/>
+      <circle cx="50" cy="50" r="28" fill="#f3e5f5"/>
+      <circle cx="40" cy="45" r="10" fill="#ffee58"/>
+      <path d="M 35 55 Q 45 45 55 50 Q 65 45 70 55 Q 75 65 65 70 Q 50 75 35 65 Q 25 60 35 55 Z" fill="#42a5f5"/>
+      <text x="65" y="40" font-size="22" font-weight="900" fill="#ec407a" text-anchor="middle">+1</text>
+      <circle cx="15" cy="20" r="2.5" fill="#fff" opacity="0.8"/>
+      <circle cx="85" cy="80" r="2" fill="#fff" opacity="0.6"/>
+    </svg>`
+  },
+  {
+    id: 'magnifier', name: 'Kính lúp', rarity: 'special',
+    bg: '#f06292', border: '#d81b60',
+    svg: `<svg viewBox="0 0 100 100" style="background:linear-gradient(145deg, #f48fb1, #ba68c8); border-radius:12px; border:4px solid #fce4ec;">
+      <circle cx="45" cy="45" r="22" fill="#fff"/>
+      <circle cx="45" cy="45" r="18" fill="#fce4ec"/>
+      <line x1="60" y1="60" x2="80" y2="80" stroke="#fff" stroke-width="12" stroke-linecap="round"/>
+      <line x1="60" y1="60" x2="80" y2="80" stroke="#f48fb1" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="45" cy="45" r="20" fill="none" stroke="#ec407a" stroke-width="4"/>
+      <path d="M35 35 Q40 30 50 35" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="15" cy="20" r="3" fill="#fff" opacity="0.8"/>
+      <circle cx="85" cy="30" r="2" fill="#fff" opacity="0.6"/>
+    </svg>`
+  },
+  {
+    id: 'done', name: 'Đã Xong', rarity: 'normal',
+    bg: '#78909c', border: '#546e7a',
+    svg: `<svg viewBox="0 0 100 100" style="background:#cfd8dc; border-radius:12px; border:2px solid #fff;">
+      <circle cx="50" cy="40" r="25" fill="#4caf50"/>
+      <polyline points="38,42 46,50 64,30" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="50" y="80" font-size="16" font-weight="900" fill="#37474f" text-anchor="middle">ĐÃ XONG</text>
     </svg>`
   }
 ];
 
-// ===================== STATE =====================
-let boardData = [];
-let cols = 4, rows = 2;
-let activeChipId = null;
-let ctxTargetIdx = null;
-let longPressTimer = null;
+/* ===================================================
+   STATE
+   =================================================== */
+let rows = 2, cols = 4;
+let board = []; // [{type: id|null, done: bool}]
+let activeTool = null; // card id or 'erase' or null
+let ctxIdx = null;
+let pendingRows = null, pendingCols = null;
 
-// ===================== BUILD CHIPS =====================
-function buildChips() {
-  const grid = document.getElementById('chipGrid');
-  grid.innerHTML = '';
-  CARD_TYPES.forEach(ct => {
-    if (ct.id === 'empty_sky') return;
+/* ===================================================
+   INIT SELECTS
+   =================================================== */
+function initSelects() {
+  const selR = document.getElementById('selRows');
+  const selC = document.getElementById('selCols');
+  for (let i = 1; i <= 20; i++) {
+    selR.innerHTML += `<option value="${i}" ${i===2?'selected':''}>${i}</option>`;
+    selC.innerHTML += `<option value="${i}" ${i===4?'selected':''}>${i}</option>`;
+  }
+}
+
+/* ===================================================
+   CHIP BAR
+   =================================================== */
+function initChips() {
+  const row = document.getElementById('ctChips');
+  // Erase chip
+  const eraseChip = document.createElement('div');
+  eraseChip.className = 'ct-chip erase-chip';
+  eraseChip.dataset.id = 'erase';
+  eraseChip.innerHTML = `
+    <div class="ct-icon" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:rgba(255,80,80,.18);border-radius:10px;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff8080" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+    </div>
+    <div class="ct-name">Xóa thẻ</div>
+    <div class="ct-badge">✓</div>
+  `;
+  eraseChip.onclick = () => setTool('erase');
+  row.appendChild(eraseChip);
+
+  CARDS.forEach(ct => {
     const chip = document.createElement('div');
-    chip.className = 'card-chip';
+    chip.className = 'ct-chip';
     chip.dataset.id = ct.id;
     chip.innerHTML = `
-      <div class="chip-icon">${ct.svg}</div>
-      <div class="chip-label">${ct.label}</div>
-      <div class="selected-badge">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
+      <div class="ct-icon">${ct.svg}</div>
+      <div class="ct-name">${ct.name}</div>
+      <div class="ct-badge">✓</div>
     `;
-    chip.addEventListener('click', () => {
-      if (activeChipId === ct.id) {
-        activeChipId = null;
-        chip.classList.remove('selected');
-      } else {
-        document.querySelectorAll('.card-chip').forEach(c => c.classList.remove('selected'));
-        activeChipId = ct.id;
-        chip.classList.add('selected');
-        showToast(`✅ Đã chọn thẻ: ${ct.label}`);
-      }
-    });
-    grid.appendChild(chip);
+    chip.onclick = () => setTool(ct.id);
+    row.appendChild(chip);
   });
 }
 
-// ===================== BUILD BOARD =====================
-function buildBoard() {
-  cols = parseInt(document.getElementById('colCount').value);
-  rows = parseInt(document.getElementById('rowCount').value);
-  const total = cols * rows;
-  boardData = Array.from({ length: total }, () => ({ cardType: null, done: false }));
-  renderBoard();
-  updateStats();
-  showToast('Đã tạo bảng mới!');
+function setTool(id) {
+  if (activeTool === id) {
+    activeTool = null;
+    document.querySelectorAll('.ct-chip').forEach(c => c.classList.remove('active'));
+    toast('🔧 Bỏ chọn công cụ');
+    return;
+  }
+  activeTool = id;
+  document.querySelectorAll('.ct-chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.id === id);
+  });
+  if (id === 'erase') {
+    toast('🗑️ Chọn ô để xóa thẻ');
+  } else {
+    const ct = CARDS.find(c => c.id === id);
+    toast(`🃏 Đặt "${ct.name}" – bấm vào ô`);
+  }
 }
 
-function renderBoard() {
-  const board = document.getElementById('board');
-  const sizeVal = document.getElementById('cardSize').value;
+/* ===================================================
+   BOARD CREATE
+   =================================================== */
+function handleCreate() {
+  const r = parseInt(document.getElementById('selRows').value);
+  const c = parseInt(document.getElementById('selCols').value);
+  if (board.length > 0 && board.some(cell => cell.type || cell.done)) {
+    pendingRows = r; pendingCols = c;
+    document.getElementById('confirmModal').classList.add('show');
+    return;
+  }
+  doCreate(r, c);
+}
 
-  board.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-  if (sizeVal !== 'auto') {
-    board.style.gridAutoRows = sizeVal + 'px';
-  } else {
-    board.style.gridAutoRows = '';
+function confirmCreate() {
+  closeModal();
+  doCreate(pendingRows, pendingCols);
+}
+
+function closeModal() {
+  document.getElementById('confirmModal').classList.remove('show');
+  pendingRows = pendingCols = null;
+}
+
+function doCreate(r, c) {
+  rows = r; cols = c;
+  board = Array.from({length: r * c}, () => ({type: null, done: false}));
+  renderBoard();
+  document.getElementById('boardActions').style.display = 'flex';
+  toast(`✅ Tạo bảng ${r} hàng × ${c} cột`);
+}
+
+/* ===================================================
+   RENDER BOARD
+   =================================================== */
+function renderBoard() {
+  const wrap = document.getElementById('boardWrap');
+  wrap.innerHTML = '';
+
+  if (board.length === 0) {
+    wrap.innerHTML = `<div class="board-empty"><div class="empty-icon">🌤️</div><p>Chọn số hàng và số cột<br>rồi bấm <b>Tạo bảng</b></p></div>`;
+    updateStats();
+    return;
   }
 
-  board.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.id = 'grid';
+  grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  wrap.appendChild(grid);
 
-  boardData.forEach((cell, idx) => {
+  board.forEach((cell, idx) => {
     const card = document.createElement('div');
-    card.className = 'game-card' + (cell.done ? ' done' : '') + (cell.cardType ? ' has-card' : '');
+    card.className = 'g-card' + (cell.type ? ' has-type' : '') + (cell.done ? ' is-done' : '');
     card.dataset.idx = idx;
-    if (cell.cardType) card.dataset.cardType = cell.cardType;
 
-    const ct = cell.cardType ? CARD_TYPES.find(c => c.id === cell.cardType) : null;
-
+    const ct = cell.type ? CARDS.find(c => c.id === cell.type) : null;
     if (ct) {
-      card.style.background = `linear-gradient(145deg, ${ct.color}, #0f172a)`;
-      if (ct.glow) card.style.boxShadow = `0 4px 16px ${ct.glow}`;
-      card.innerHTML = `
-        <div class="card-img-wrap">${ct.svg}</div>
-        <div class="done-overlay">
-          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/>
-          </svg>
-        </div>
-      `;
-    } else {
-      card.innerHTML = `
-        <svg class="card-default-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
-        </svg>
-        <div class="done-overlay">
-          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/>
-          </svg>
-        </div>
-      `;
+      card.style.background = ct.bg;
+      card.style.borderColor = ct.border;
     }
 
-    // Interactions
-    card.addEventListener('click', () => {
-      if (activeChipId) placeCard(idx, activeChipId);
-      else toggleDone(idx);
+    card.innerHTML = `
+      ${ct
+        ? `<div class="card-svg-wrap">${ct.svg}</div>`
+        : `<svg class="default-icon" viewBox="0 0 40 38" fill="none"><circle cx="24" cy="14" r="9" fill="rgba(255,255,255,.3)"/><ellipse cx="16" cy="21" rx="11" ry="8" fill="rgba(255,255,255,.25)"/><circle cx="10" cy="19" r="6" fill="rgba(255,255,255,.2)"/><path d="M5 31 Q20 24 35 31" stroke="rgba(255,255,255,.18)" stroke-width="1.5" fill="none"/></svg>`
+      }
+      <div class="done-overlay">
+        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/>
+        </svg>
+      </div>
+    `;
+
+    // Left click
+    card.addEventListener('click', e => {
+      e.stopPropagation();
+      if (activeTool) {
+        if (activeTool === 'erase') {
+          applyErase(idx);
+        } else {
+          applyCard(idx, activeTool);
+        }
+      } else {
+        toggleDone(idx);
+      }
     });
 
-    card.addEventListener('contextmenu', (e) => {
+    // Right click → context menu
+    card.addEventListener('contextmenu', e => {
       e.preventDefault();
-      showCtxMenu(e.clientX, e.clientY, idx);
+      openCtx(e.clientX, e.clientY, idx);
     });
 
-    card.addEventListener('touchstart', (e) => {
-      longPressTimer = setTimeout(() => {
+    // Long press (mobile)
+    let lpt;
+    card.addEventListener('touchstart', e => {
+      lpt = setTimeout(() => {
         const t = e.touches[0];
-        showCtxMenu(t.clientX, t.clientY, idx);
-      }, 500);
+        openCtx(t.clientX, t.clientY, idx);
+      }, 480);
     }, {passive: true});
-    card.addEventListener('touchend', () => clearTimeout(longPressTimer));
-    card.addEventListener('touchmove', () => clearTimeout(longPressTimer), {passive: true});
+    card.addEventListener('touchend', () => clearTimeout(lpt), {passive: true});
+    card.addEventListener('touchmove', () => clearTimeout(lpt), {passive: true});
 
-    board.appendChild(card);
+    grid.appendChild(card);
   });
 
   updateStats();
 }
 
-// ===================== ACTIONS =====================
-function placeCard(idx, typeId) {
-  if (!boardData[idx]) return;
-  boardData[idx].cardType = typeId;
-  boardData[idx].done = false;
-  renderBoard();
+/* ===================================================
+   CARD OPERATIONS
+   =================================================== */
+function applyCard(idx, typeId) {
+  board[idx].type = typeId;
+  board[idx].done = false;
+  refreshCard(idx);
+  updateStats();
+}
+
+function applyErase(idx) {
+  board[idx].type = null;
+  board[idx].done = false;
+  refreshCard(idx);
+  updateStats();
 }
 
 function toggleDone(idx) {
-  if (!boardData[idx] || !boardData[idx].cardType) return;
-  boardData[idx].done = !boardData[idx].done;
-  const card = document.querySelector(`.game-card[data-idx="${idx}"]`);
-  if (card) {
-    card.classList.toggle('done', boardData[idx].done);
-  }
+  board[idx].done = !board[idx].done;
+  const el = document.querySelector(`.g-card[data-idx="${idx}"]`);
+  if (el) el.classList.toggle('is-done', board[idx].done);
   updateStats();
 }
 
-function removeCard() {
-  if (ctxTargetIdx === null) return;
-  boardData[ctxTargetIdx].cardType = null;
-  boardData[ctxTargetIdx].done = false;
-  hideCtxMenu();
-  renderBoard();
+function refreshCard(idx) {
+  const oldCard = document.querySelector(`.g-card[data-idx="${idx}"]`);
+  if (!oldCard) return;
+  const cell = board[idx];
+  const ct = cell.type ? CARDS.find(c => c.id === cell.type) : null;
+  oldCard.className = 'g-card' + (cell.type ? ' has-type' : '') + (cell.done ? ' is-done' : '');
+  if (ct) { oldCard.style.background = ct.bg; oldCard.style.borderColor = ct.border; }
+  else { oldCard.style.background = ''; oldCard.style.borderColor = ''; }
+  oldCard.innerHTML = `
+    ${ct
+      ? `<div class="card-svg-wrap">${ct.svg}</div>`
+      : `<svg class="default-icon" viewBox="0 0 40 38" fill="none"><circle cx="24" cy="14" r="9" fill="rgba(255,255,255,.3)"/><ellipse cx="16" cy="21" rx="11" ry="8" fill="rgba(255,255,255,.25)"/><circle cx="10" cy="19" r="6" fill="rgba(255,255,255,.2)"/><path d="M5 31 Q20 24 35 31" stroke="rgba(255,255,255,.18)" stroke-width="1.5" fill="none"/></svg>`
+    }
+    <div class="done-overlay">
+      <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/>
+      </svg>
+    </div>
+  `;
 }
 
-function clearAllDone() {
-  if(boardData.length === 0) return;
-  boardData.forEach(c => { c.done = false; });
-  renderBoard();
-  showToast('👁️ Đã bỏ mờ tất cả các ô');
-}
-
-function clearAllCards() {
-  if(boardData.length === 0) return;
-  boardData.forEach(c => { c.cardType = null; c.done = false; });
-  renderBoard();
-  showToast('🧹 Đã xóa tất cả thẻ');
-}
-
-function resetAll() {
-  boardData = [];
-  document.getElementById('board').innerHTML = `
-    <div class="empty-board">
-      <div class="big-icon">🎯</div>
-      <p>Nhấn <b>Tạo bảng</b> để bắt đầu cấu hình game!</p>
-    </div>`;
+function clearDone() {
+  board.forEach(c => c.done = false);
+  document.querySelectorAll('.g-card.is-done').forEach(el => el.classList.remove('is-done'));
   updateStats();
-  showToast('🔄 Đã làm mới toàn bộ');
+  toast('👁️ Đã bỏ mờ tất cả ô');
 }
 
-// ===================== STATS =====================
+function clearCards() {
+  board.forEach(c => { c.type = null; c.done = false; });
+  renderBoard();
+  toast('🧹 Đã xóa toàn bộ thẻ');
+}
+
+/* ===================================================
+   STATS
+   =================================================== */
 function updateStats() {
-  document.getElementById('totalCells').textContent = boardData.length;
-  document.getElementById('placedCount').textContent = boardData.filter(c => c.cardType).length;
-  document.getElementById('doneCount').textContent = boardData.filter(c => c.done).length;
+  const placed = board.filter(c => c.type).length;
+  const visible = board.filter(c => !c.done).length;
+  const done = board.filter(c => c.done).length;
+  document.getElementById('statCards').innerHTML = `${placed} <span>ảnh</span>`;
+  document.getElementById('statVisible').innerHTML = `${visible} <span>ô</span>`;
+  document.getElementById('statDone').innerHTML = `${done} <span>ô</span>`;
 }
 
-// ===================== CONTEXT MENU =====================
-function buildCtxCardList() {
-  const list = document.getElementById('ctxCardList');
+/* ===================================================
+   CONTEXT MENU
+   =================================================== */
+function openCtx(x, y, idx) {
+  ctxIdx = idx;
+  const menu = document.getElementById('ctxMenu');
+  const list = document.getElementById('ctxList');
   list.innerHTML = '';
-  CARD_TYPES.filter(ct => ct.id !== 'empty_sky').forEach(ct => {
+
+  // Mark/unmark
+  const markBtn = document.getElementById('ctxMarkBtn');
+  markBtn.textContent = board[idx].done ? '↩️ Bỏ mờ ô này' : '✅ Đánh dấu đã lật';
+
+  // Card options
+  CARDS.forEach(ct => {
     const item = document.createElement('div');
     item.className = 'ctx-item';
-    item.innerHTML = `<div class="ctx-icon" style="background:${ct.color};border-radius:6px;padding:2px;">${ct.svg}</div><span>${ct.label}</span>`;
-    item.addEventListener('click', () => {
-      placeCard(ctxTargetIdx, ct.id);
-      hideCtxMenu();
-    });
+    item.innerHTML = `<div class="ctx-card-icon">${ct.svg}</div><span>${ct.name}</span>`;
+    item.onclick = () => { applyCard(idx, ct.id); hideCtx(); };
     list.appendChild(item);
+  });
+
+  // Position
+  menu.style.display = 'none'; menu.classList.remove('show');
+  requestAnimationFrame(() => {
+    menu.style.display = '';
+    const mw = 210, mh = 340;
+    let left = x + 8, top = y + 8;
+    if (left + mw > window.innerWidth - 8) left = window.innerWidth - mw - 8;
+    if (top + mh > window.innerHeight - 8) top = window.innerHeight - mh - 8;
+    if (top < 60) top = 60;
+    menu.style.left = left + 'px';
+    menu.style.top = top + 'px';
+    requestAnimationFrame(() => menu.classList.add('show'));
   });
 }
 
-function showCtxMenu(x, y, idx) {
-  ctxTargetIdx = idx;
-  buildCtxCardList();
+function hideCtx() {
   const menu = document.getElementById('ctxMenu');
-  menu.classList.add('visible');
-
-  // Avoid clipping out of window
-  const mw = 220, mh = 350;
-  let left = x + 10, top = y + 10;
-  if (left + mw > window.innerWidth) left = window.innerWidth - mw - 10;
-  if (top + mh > window.innerHeight) top = window.innerHeight - mh - 10;
-  menu.style.left = left + 'px';
-  menu.style.top = top + 'px';
+  menu.classList.remove('show');
+  setTimeout(() => { if (!menu.classList.contains('show')) menu.style.display = 'none'; }, 160);
+  ctxIdx = null;
 }
 
-function hideCtxMenu() {
-  document.getElementById('ctxMenu').classList.remove('visible');
-  ctxTargetIdx = null;
+function ctxToggleDone() {
+  if (ctxIdx === null) return;
+  toggleDone(ctxIdx);
+  hideCtx();
 }
 
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('.ctx-menu')) hideCtxMenu();
+function ctxErase() {
+  if (ctxIdx === null) return;
+  applyErase(ctxIdx);
+  hideCtx();
+  toast('🗑️ Đã xóa thẻ khỏi ô');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.ctx')) hideCtx();
 });
-document.addEventListener('scroll', hideCtxMenu, true);
+document.addEventListener('scroll', hideCtx, true);
 
-// ===================== TOAST =====================
-function showToast(msg) {
-  const wrap = document.getElementById('toastWrap');
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.textContent = msg;
-  wrap.appendChild(t);
-  setTimeout(() => {
-    if(t.parentNode) t.remove();
-  }, 2300);
+/* ===================================================
+   TOAST
+   =================================================== */
+function toast(msg) {
+  const root = document.getElementById('toastRoot');
+  const el = document.createElement('div');
+  el.className = 'toast-msg';
+  el.textContent = msg;
+  root.appendChild(el);
+  setTimeout(() => el.remove(), 2300);
 }
 
-// ===================== HELP =====================
-function toggleHelp() {
-  const h = document.getElementById('helpBox');
-  h.style.display = h.style.display === 'none' ? 'block' : 'none';
+/* ===================================================
+   LANG TOGGLE
+   =================================================== */
+const langBtn = document.querySelector('.lang-btn');
+let isEN = false;
+function toggleLang() {
+  isEN = !isEN;
+  langBtn.textContent = isEN ? '🇺🇸 EN' : '🇻🇳 VN';
+  toast(isEN ? '🇺🇸 Switched to English UI' : '🇻🇳 Chuyển sang Tiếng Việt');
 }
 
-// ===================== INIT =====================
-buildChips();
+/* ===================================================
+   BOOT
+   =================================================== */
+initSelects();
+initChips();
+updateStats();
 </script>
 </body>
 </html>
